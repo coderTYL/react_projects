@@ -1,0 +1,10 @@
+#checkboxes{
+    border-style: solid;
+    border-color: dimgray;
+    margin-top: 1rem;
+    list-style-type: none;
+    padding: 0.3rem 0.5rem;
+}
+#checkboxes>li:hover{
+    background-color: rgb(200, 200, 200);
+}

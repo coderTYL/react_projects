@@ -1,0 +1,9 @@
+#input{
+    border-style: solid;
+    border-color: dimgray;
+    height: 2rem;
+}
+#input:hover {
+    border-color: rgb(0, 162, 255);
+    background-color: rgb(200, 200, 200)
+}

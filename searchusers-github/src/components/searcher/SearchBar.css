@@ -8,6 +8,8 @@
 
 input {
     width: 20rem;
+    border-bottom: 3px solid greenyellow;
+    outline: none;
 }
 
 button {

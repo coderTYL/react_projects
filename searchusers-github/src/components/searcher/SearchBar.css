@@ -1,0 +1,18 @@
+#bar {
+    padding-top: 1rem;
+    text-align: center;
+    height: 5rem;
+    background-color: dimgray;
+    color: white;
+}
+
+input {
+    width: 20rem;
+}
+
+button {
+    width: 3rem;
+    margin-left: 0.5rem;
+    background-color: greenyellow;
+    color: gray;
+}

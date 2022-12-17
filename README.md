@@ -1,3 +1,0 @@
-# READE ME
-
-FIRST GIT

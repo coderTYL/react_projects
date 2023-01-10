@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import {myContext} from '../../App'
 
 export default function Profile(props) {
-  let [account, setAccount] = useState(props.account);
-  let [count, setCount] = useState(props.account.age);
+  const value = useContext(myContext);
+  let [account, setAccount] = useState(value);
+  let [count, setCount] = useState(value.age);
   function changeAccount() {
     setAccount(
       (account)=>{

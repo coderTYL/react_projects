@@ -2,6 +2,8 @@ import Dishes from "./pages/dishes/Dishes";
 import { Navigate } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
+import News from "./pages/home/news/News";
+import Declaration from "./pages/home/declaration/Declaration";
 
 export const routes = [
     {
@@ -10,7 +12,17 @@ export const routes = [
     },
     {
         path: '/home',
-        element: <Home />
+        element: <Home />,
+        children: [
+            {
+                path: 'news',
+                element: <News />
+            },
+            {
+                path: 'declaration',
+                element: <Declaration />
+            }
+        ] 
     },
     {
         path: '/profile',

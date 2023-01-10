@@ -1,7 +1,5 @@
 import React from 'react'
-import { NavLink, Route, Routes } from 'react-router-dom'
-import Declaration from './declaration/Declaration'
-import News from './news/News'
+import { NavLink, Outlet } from 'react-router-dom'
 
 export default function Home() {
   return (
@@ -15,10 +13,7 @@ export default function Home() {
             </li>
         </ul>
         <div className='display'>展示区
-            <Routes>
-                <Route path='/home/news' element={<News />} />
-                <Route path='/home/declaration' element={<Declaration />} />
-            </Routes>
+            <Outlet />
         </div>
     </div>
   )

@@ -4,6 +4,7 @@ import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
 import News from "./pages/home/news/News";
 import Declaration from "./pages/home/declaration/Declaration";
+import Content from "./components/content/Content";
 
 export const routes = [
     {
@@ -16,7 +17,17 @@ export const routes = [
         children: [
             {
                 path: 'news',
-                element: <News />
+                element: <News />,
+                children: [
+                    {
+                        path: 'times',
+                        element: <Content />
+                    },
+                    {
+                        path: 'sports',
+                        element: <Content />
+                    }
+                ]
             },
             {
                 path: 'declaration',

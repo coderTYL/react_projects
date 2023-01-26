@@ -3,7 +3,7 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from '@ant-design/icons';
-import { Layout, theme } from 'antd';
+import { Layout, theme, Divider } from 'antd';
 import React, { useState } from 'react';
 import { useRoutes } from 'react-router-dom';
 import { elements } from './routes';
@@ -24,6 +24,7 @@ export default function App() {
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" > pic </div>
+        <Divider />
         <MyMenu />
       </Sider>
       <Layout className="site-layout">

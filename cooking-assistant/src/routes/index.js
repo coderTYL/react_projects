@@ -2,10 +2,9 @@ import Favorite from "../pages/favorite/Favorite";
 import Dishes from "../pages/dishes/Dishes";
 import Schedule from "../pages/schedule/Schedule";
 import CreateSchedule from "../pages/schedule/CreateSchedule";
-import ModifySchedule from "../pages/schedule/ModifySchedule";
-import DeleteSchedule from "../pages/schedule/DeleteSchedule";
 import IndividualSchedule from "../pages/schedule/IndividualSchedule";
 import Home from "../pages/home/Home";
+import { Navigate } from "react-router-dom";
 
 export const elements = [
     {
@@ -17,16 +16,12 @@ export const elements = [
                 element: <CreateSchedule />
             },
             {
-                path: 'modify',
-                element: <ModifySchedule />
-            },
-            {
-                path: 'delete',
-                element: <DeleteSchedule />
-            },
-            {
                 path: 'individual',
                 element: <IndividualSchedule />
+            },
+            {
+                path: '/schedule/',
+                element: <Navigate to={'individual'} />
             }
         ]
     },

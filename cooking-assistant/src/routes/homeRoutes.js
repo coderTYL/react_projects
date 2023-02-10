@@ -3,7 +3,7 @@ import Dishes from "../pages/dishes/Dishes";
 import Schedule from "../pages/schedule/Schedule";
 import CreateSchedule from "../pages/schedule/CreateSchedule";
 import IndividualSchedule from "../pages/schedule/IndividualSchedule";
-import Home from "../pages/home/Home";
+import Home from "../pages/profile/Profile";
 import { Navigate } from "react-router-dom";
 
 export const elements = [

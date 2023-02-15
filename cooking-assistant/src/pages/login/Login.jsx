@@ -1,21 +1,30 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
+import { useRef } from 'react';
 import './login.css'
 
 
-export default function Login() {
+export default function Login(props) {
+    let userNameInput = useRef();
+    let passwordInput = useRef();
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
     };
     const login = ()=>{
-        fetch().then(
+        let request = new Request('http://localhost:8080/cooking-assistant/login', {
+            method: 'POST',
+            body: `${userNameInput.current.value}`
+        });
+        
+        fetch(request).then(
             (response)=>{response.json()}
         ).then(
             (res)=>{
+                props.getAccountInfo(res);
             }
         );
     };
-
+    console.log(userNameInput)
     return (
         <Form
             name="normal_login"
@@ -34,7 +43,7 @@ export default function Login() {
                     },
                 ]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="用户名" />
+                <Input ref={userNameInput} prefix={<UserOutlined className="site-form-item-icon" />} placeholder="用户名" />
             </Form.Item>
             <Form.Item
                 name="password"
@@ -45,7 +54,7 @@ export default function Login() {
                     },
                 ]}
             >
-                <Input
+                <Input ref={passwordInput}
                     prefix={<LockOutlined className="site-form-item-icon" />}
                     type="password"
                     placeholder="密码"

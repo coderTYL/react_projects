@@ -1,21 +1,25 @@
-import React, {useState} from 'react'
-import Home from './pages/home/Home';
+import React, {useEffect, useState} from 'react'
 import Login from './pages/login/Login';
+import Home from './pages/home/Home'
 
+export const loginContext = React.createContext();
 
 export default function App() {
   let accountInfo = {};
-  let loginContext = React.createContext();
   const [isLogin, setIsLogin] = useState(false);
-  
+  useEffect(
+    (accountInfo)=>{
+      if (accountInfo !== undefined) {
+        setIsLogin(true);
+      }
+    }, [isLogin]
+  );
   let getAccountInfo = (account)=>{
-    return accountInfo = account;
+    return account;
   }
   return (
-    <div>
-      <loginContext.Provider>
-        {isLogin? <Home /> : <Login getAccountInfo={getAccountInfo}/>}
+      <loginContext.Provider value={accountInfo}>
+        {isLogin ? <Home /> : <Login getAccountInfo={getAccountInfo}/>}
       </loginContext.Provider>
-    </div>
   )
 }

@@ -4,17 +4,19 @@ import {
     MenuUnfoldOutlined,
   } from '@ant-design/icons';
   import { Layout, theme, Divider } from 'antd';
-  import React, { useState } from 'react';
+  import React, { useContext, useState } from 'react';
   import { useRoutes } from 'react-router-dom';
   import { elements } from '../../routes/homeRoutes';
   import 'antd/dist/reset.css';
   import './home.css';
   import MyMenu from '../../layouts/menu/MyMenu';
+import { loginContext } from '../../App';
   
   
   const { Header, Sider, Content } = Layout;
   
   export default function Home() {
+    let account = useContext(loginContext);
     const element = useRoutes(elements);
     const [collapsed, setCollapsed] = useState(false);
     const {
@@ -38,7 +40,7 @@ import {
               className: 'trigger',
               onClick: () => setCollapsed(!collapsed),
             })}
-            展示图片
+            展示图片{account.userName}
           </Header>
           <Content
             style={{

@@ -1,5 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import './login.css'
 
 
@@ -23,12 +23,18 @@ export default function Login(props) {
         ).then(
             (res)=>{
                 props.getAccountInfo(res);
+                message.success('登录成功', 3)
+            },
+            (error)=>{
+                message.error('登录失败', 3);
+                console.log(error)
             }
         );
     };
     console.log(from)
     return (
         <Form
+            id='components-form-demo-normal-login'
             from = {from}
             name="normal_login"
             className="login-form"

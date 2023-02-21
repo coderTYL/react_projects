@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import Login from './pages/login/Login';
 import Home from './pages/home/Home'
+import './App.css'
 
 export const loginContext = React.createContext();
 
@@ -18,8 +19,10 @@ export default function App() {
     return account;
   }
   return (
+    <div id='container'>
       <loginContext.Provider value={accountInfo}>
-        {isLogin ? <Home /> : <Login getAccountInfo={getAccountInfo}/>}
+        {isLogin ? <Home /> : <Login getAccountInfo={getAccountInfo} />}
       </loginContext.Provider>
+    </div>
   )
 }

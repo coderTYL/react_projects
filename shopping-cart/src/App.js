@@ -1,4 +1,4 @@
-import { Space, Table, Tag } from 'antd';
+import { InputNumber, Space, Table, Tag } from 'antd';
 import { useReducer } from 'react';
 import React from 'react';
 import Add from './components/add/Add';
@@ -10,7 +10,7 @@ const columns = [
     title: '商品',
     dataIndex: 'name',
     key: 'name',
-    
+
   },
   {
     title: '数量',
@@ -43,72 +43,85 @@ const columns = [
     ),
   },
   {
-    title: 'Action',
+    title: '价格',
+    dataIndex: 'price',
+    key: 'price'
+  },
+  {
+    title: '操作',
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <Add commodity={record}/>
-        {record.count}
-        <Minus commodity={record} />
+        <Add count={record.count} />
+        <InputNumber defaultValue={1} min={1} max={10} size='middle' onChange={getChangeCount} />
+        <Minus count={record.count} />
       </Space>
     ),
-  },
+  }
 ];
 const data = [
   {
-    key: '1',
+    key: 'mouse',
     name: '鼠标',
-    count: 32,
+    count: 1,
     address: '广东深圳',
     tags: ['nice', 'developer'],
+    price: 150
   },
   {
-    key: '2',
+    key: 'monitor',
     name: '显示器',
-    count: 42,
+    count: 1,
     address: '浙江杭州',
     tags: ['loser'],
+    price: 2000
   },
   {
-    key: '3',
+    key: 'power',
     name: '电源',
-    count: 32,
+    count: 1,
     address: '江苏舟山',
     tags: ['cool', 'teacher'],
+    price: 500
   },
 ];
 
-const commodityReducer = (preState, action)=>{
-  let {type} = action;
+let changeValue = 1;
+const getChangeCount = (value) => {
+  changeValue = value;
+  console.log(changeValue);
+}
+export const dataContext = React.createContext(1);
+
+/* const countReducer = (count, action) => {
+  let { type } = action;
   switch (type) {
     case 'add':
-     return ++ preState;
-  
-    case 'minus':
-      return  -- preState;
-    default : return preState;
-  }
-}
+      return count + changeValue;
 
-/* const init = (commodity)=>{
-  let {key, name, count, address, tags} = commodity;
-  return {
-    key,
-    name,
-    count,
-    address,
-    tags
+    case 'minus':
+      return count - changeValue;
+    default: return count;
   }
 } */
 
-export const dataContext = React.createContext();
-
 export default function App() {
-  
-  let array = useReducer(commodityReducer, data);
+  let getSum = function sum(data) {
+    let total = 0;
+    data.forEach(element => {
+      total += element.count * element.price;
+    });
+    return total;
+  }
+  /* let [count, dispatch] = useReducer(countReducer, 0); */
   return (
-    <dataContext.Provider value={array}>
-      <Table columns={columns} dataSource={array[0]} />
+    <dataContext.Provider value={changeValue}>
+      <Table columns={columns} dataSource={data} />
+      <ul style={{ listStyleType: 'none' }} >
+        <li>总 价</li>
+        <hr />
+        <li>{getSum(data)}</li>
+      </ul>
     </dataContext.Provider>
   );
 

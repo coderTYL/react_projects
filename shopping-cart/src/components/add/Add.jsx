@@ -1,11 +1,12 @@
 import React, { useContext } from 'react'
-import { dataContext } from '../../App'
 import {PlusOutlined} from '@ant-design/icons';
+import { dispatchContext } from '../../App';
 
 export default function Add(props) {
-    let velue = useContext(dataContext);
+    let {key} = props.record;
+    let dispatch = useContext(dispatchContext);
     let changeCount = ()=>{
-        
+        dispatch({type: 'add', payload: key});
     };
   return (
     <button onClick={changeCount}><PlusOutlined /></button>

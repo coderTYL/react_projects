@@ -1,8 +1,8 @@
-import { InputNumber, Space, Table, Tag } from 'antd';
-import { useReducer } from 'react';
-import React from 'react';
-import Add from './components/add/Add';
-import Minus from './components/minus/Minus';
+import { Space, Table, Tag } from 'antd';
+import React, { useReducer } from 'react';
+import Delete from './components/delete/Delete'
+import Add from './components/add/Add'
+import Minus from './components/minus/Minus'
 import './App.css';
 
 const columns = [
@@ -52,9 +52,9 @@ const columns = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <Add count={record.count} />
-        <InputNumber defaultValue={1} min={1} max={10} size='middle' onChange={getChangeCount} />
-        <Minus count={record.count} />
+        <Add record={record} />
+        <Minus record={record} />
+        <Delete record={record} />
       </Space>
     ),
   }
@@ -86,25 +86,7 @@ const data = [
   },
 ];
 
-let changeValue = 1;
-const getChangeCount = (value) => {
-  changeValue = value;
-  console.log(changeValue);
-}
-export const dataContext = React.createContext(1);
-
-/* const countReducer = (count, action) => {
-  let { type } = action;
-  switch (type) {
-    case 'add':
-      return count + changeValue;
-
-    case 'minus':
-      return count - changeValue;
-    default: return count;
-  }
-} */
-
+export const dispatchContext = React.createContext();
 export default function App() {
   let getSum = function sum(data) {
     let total = 0;
@@ -113,16 +95,50 @@ export default function App() {
     });
     return total;
   }
-  /* let [count, dispatch] = useReducer(countReducer, 0); */
+  function eReducer(elements, action) {
+    switch (action.type) {
+      case 'delete':
+        let elementsAfterFilter = elements.filter(
+          (element)=>{
+            return action.payload !== element.key
+          }
+        );
+        return elementsAfterFilter;
+      case 'add':
+        let elementsAfterAdd = elements.map(
+          (element)=>{
+            if (action.payload === element.key) {
+              ++ element.count;
+            }
+            return element;
+          }
+        );
+        return elementsAfterAdd;
+      case 'minus':
+        let elementsAfterMinus = elements.map(
+          (element)=>{
+            if (action.payload === element.key) {
+              -- element.count;
+            }
+            return element;
+          }
+        );
+        return elementsAfterMinus;
+      default: return elements;
+    }
+  }
+  let [elements, dispatch] = useReducer(eReducer, data);
   return (
-    <dataContext.Provider value={changeValue}>
-      <Table columns={columns} dataSource={data} />
+    <div>
+      <dispatchContext.Provider value={dispatch}>
+      <Table columns={columns} dataSource={elements} />
       <ul style={{ listStyleType: 'none' }} >
         <li>总 价</li>
         <hr />
-        <li>{getSum(data)}</li>
+        <li>{getSum(elements)}</li>
       </ul>
-    </dataContext.Provider>
+      </dispatchContext.Provider>
+    </div>
   );
 
 };

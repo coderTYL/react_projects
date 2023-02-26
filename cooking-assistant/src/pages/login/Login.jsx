@@ -4,14 +4,15 @@ import './login.css'
 
 
 export default function Login(props) {
-    let from = Form.useForm();
-    let account = {
-        userName: '',
-        password: ''
-    };
+    let account = {};
     const onFinish = (values) => {
+        account = {
+            userName: values.userName,
+            password: values.password
+        }
         console.log('Received values of form: ', values);
     };
+    console.log(account)
     const login = ()=>{
         let request = new Request('http://localhost:8080/cooking-assistant/login', {
             method: 'POST',
@@ -31,11 +32,9 @@ export default function Login(props) {
             }
         );
     };
-    console.log(from)
     return (
         <Form
             id='components-form-demo-normal-login'
-            from = {from}
             name="normal_login"
             className="login-form"
             initialValues={{

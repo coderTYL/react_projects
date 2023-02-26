@@ -1,8 +1,14 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { MinusOutlined } from '@ant-design/icons'
+import { dispatchContext } from '../../App';
 
-export default function Minus() {
+export default function Minus(props) {
+  let {key} = props.record;
+  let dispatch = useContext(dispatchContext);
+  let changeCount = ()=>{
+    dispatch({type: 'minus', payload: key});
+  };
   return (
-    <button ><MinusOutlined /></button>
+    <button onClick={changeCount} ><MinusOutlined /></button>
   )
 }

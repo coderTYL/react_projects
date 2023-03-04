@@ -1,10 +1,20 @@
 import { Button, Form, Input } from 'antd'
 import React from 'react'
+import httpRequest from '../../utils/httpRequest';
 
 export default function ResetPassword() {
     const [form] = Form.useForm();
     let onFinish = (values)=>{
         console.log(values);
+        httpRequest('/resetPassword', 'POST', values).then(
+            (res)=>{
+                console.log(res);
+            }
+        ).catch(
+            (error)=>{
+                console.log(error);
+            }
+        );
     }
   return (
     <Form

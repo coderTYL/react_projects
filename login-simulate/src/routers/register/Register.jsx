@@ -11,6 +11,7 @@ import {
     Select,
   } from 'antd';
   import { useState } from 'react';
+import httpRequest from '../../utils/httpRequest';
   const { Option } = Select;
   const residences = [
     {
@@ -80,6 +81,18 @@ import {
     const [form] = Form.useForm();
     const onFinish = (values) => {
       console.log('Received values of form: ', values);
+
+      // 通过封装方法发送数据到服务器
+      httpRequest('/register', 'POST', values).then(
+        (res)=>{
+          console.log(res);
+        }
+      ).catch(
+        (error)=>{
+          console.log(error);
+        }
+      );
+
     };
     const prefixSelector = (
       <Form.Item name="prefix" noStyle>
@@ -336,7 +349,7 @@ import {
           {...tailFormItemLayout}
         >
           <Checkbox>
-            I have read the <a href="">agreement</a>
+            I have read the <Button type='link'>agreement</Button>
           </Checkbox>
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>

@@ -1,0 +1,47 @@
+#container{
+  /* position: absolute; */
+  width: 90vw;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+hr{
+  background-color: black;
+  height: 1px;
+  margin: 0;
+}
+header{
+  font-size: larger;
+  font-weight: bolder;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(94, 129, 194);
+}
+section{
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 2rem auto 2rem;
+}
+
+#section1{
+  width: 39rem;
+  height: 20vh;
+}
+
+#editor{
+  overflow:auto;
+  padding: 0;
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: inherit;
+  width: inherit;
+  height: 13vh;
+}
+
+#previewer{
+  height: 50vh;
+}
+

@@ -1,11 +1,12 @@
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import { Breadcrumb, Button, Layout, Menu, theme } from 'antd';
 import React from 'react';
-import {LogoutOutlined, WarningOutlined, HomeOutlined, EditOutlined, UnorderedListOutlined} from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { UserAddOutlined, LogoutOutlined, WarningOutlined, HomeOutlined, EditOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import '../styles/mainLayout.css';
+import { useNavigate, useRoutes } from 'react-router-dom';
+import { routes } from '../router/routes';
 
 const { Header, Content, Sider } = Layout;
-
 const menuItems = [
     {
         key: 'home',
@@ -13,25 +14,68 @@ const menuItems = [
         label: '首页'
     },
     {
-        key: '1',
+        key: 'manage',
         icon: <EditOutlined />,
         label: '管理',
         children: [
             {
-                key: 'c1',
+                key: 'list',
                 icon: <UnorderedListOutlined />,
                 label: '查看'
+            },
+            {
+                key: 'insertPerson',
+                icon: <UserAddOutlined />,
+                label: '添加人员'
             }
         ]
     },
     {
-        key: '2',
+        key: 'warning',
         icon: <WarningOutlined />,
-        label: '预警'
+        label: '预警信息'
     }
 
 ];
 const MainLayout = () => {
+    const elements = useRoutes(routes);
+    let navigate = useNavigate();
+    let menuNavigate = (data) => {
+        let path = data.keyPath.reverse().join('/')
+        navigate(`/${path}`);
+    }
+    let BreadcrumbItems = [
+        {
+            path: 'index',
+            title: 'home',
+        },
+        {
+            path: 'first',
+            title: 'first',
+            children: [
+                {
+                    path: '/general',
+                    title: 'General',
+                },
+                {
+                    path: '/layout',
+                    title: 'Layout',
+                },
+                {
+                    path: '/navigation',
+                    title: 'Navigation',
+                },
+            ],
+        },
+        {
+            path: 'second',
+            title: 'second',
+        },
+    ];
+    function itemRender(item, params, items, paths) {
+        const last = items.indexOf(item) === items.length - 1;
+        return last ? <span>{item.title}</span> : <Link to={paths.join('/')}>{item.title}</Link>;
+    }
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -45,10 +89,10 @@ const MainLayout = () => {
                     margin: '16px 24px 16px 0',
                     background: 'rgba(255, 255, 255, 0.3)'
                 }} />
-                <div style={{float: 'right'}} >
+                <div style={{ float: 'right' }} >
                     欢迎
                     <Button type="primary" >
-                    <LogoutOutlined />
+                        <LogoutOutlined />
                     </Button>
                 </div>
             </Header>
@@ -68,6 +112,7 @@ const MainLayout = () => {
                             borderRight: 0,
                         }}
                         items={menuItems}
+                        onClick={menuNavigate}
                     />
                 </Sider>
                 <Layout
@@ -80,22 +125,8 @@ const MainLayout = () => {
                             margin: '16px 0',
                         }}
                         separator=">"
-                        items={[
-                            {
-                                title: 'Home',
-                            },
-                            {
-                                title: 'Application Center',
-                                href: '',
-                            },
-                            {
-                                title: 'Application List',
-                                href: '',
-                            },
-                            {
-                                title: 'An Application',
-                            },
-                        ]}
+                        items={BreadcrumbItems}
+                        itemRender={itemRender}
                     />
                     <Content
                         style={{
@@ -105,7 +136,7 @@ const MainLayout = () => {
                             background: colorBgContainer,
                         }}
                     >
-                        Content
+                        {elements}
                     </Content>
                 </Layout>
             </Layout>

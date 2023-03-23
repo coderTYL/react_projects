@@ -5,6 +5,7 @@ import { UserAddOutlined, LogoutOutlined, WarningOutlined, HomeOutlined, EditOut
 import '../styles/mainLayout.css';
 import { useNavigate, useRoutes } from 'react-router-dom';
 import { routes } from '../router/routes';
+import logo from '../assets/南航双图标.png';
 
 const { Header, Content, Sider } = Layout;
 const menuItems = [
@@ -73,30 +74,29 @@ const MainLayout = () => {
         },
     ];
     function itemRender(item, params, items, paths) {
-        const last = items.indexOf(item) === items.length - 1;
-        return last ? <span>{item.title}</span> : <Link to={paths.join('/')}>{item.title}</Link>;
+        /* const last = items.indexOf(item) === items.length - 1;
+        return last ? <span>{item.title}</span> : <Link to={paths.join('/')}>{item.title}</Link>; */
     }
     const {
         token: { colorBgContainer },
     } = theme.useToken();
     return (
-        <Layout>
-            <Header className="header">
+        <Layout style={{minHeight: '100vh'}}>
+            <Header className="header" style={{backgroundColor: 'white'}}>
                 <div className="logo" style={{
                     float: 'left',
-                    width: '120px',
-                    height: '31px',
-                    margin: '16px 24px 16px 0',
-                    background: 'rgba(255, 255, 255, 0.3)'
-                }} />
+                    margin: 'auto',
+                }}>
+                    <img src={logo} alt="logo" width={'200vm'}/>
+                </div>
                 <div style={{ float: 'right' }} >
-                    欢迎
+                    欢迎 #nbsp;
                     <Button type="primary" >
-                        <LogoutOutlined />
+                        <LogoutOutlined /> 退出
                     </Button>
                 </div>
             </Header>
-            <Layout>
+            <Layout style={{color: 'darkBlue', background: '#0093d0'}}>
                 <Sider
                     width={200}
                     style={{
@@ -118,6 +118,7 @@ const MainLayout = () => {
                 <Layout
                     style={{
                         padding: '0 24px 24px',
+                        background: '#0093d0',
                     }}
                 >
                     <Breadcrumb
@@ -134,6 +135,9 @@ const MainLayout = () => {
                             margin: 0,
                             minHeight: 280,
                             background: colorBgContainer,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
                         }}
                     >
                         {elements}

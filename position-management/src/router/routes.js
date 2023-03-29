@@ -1,9 +1,13 @@
 import { Navigate } from "react-router-dom";
 import Login from "../pages/login/Login";
-import Home from '../pages/home/Home'
+import WelcomePage from '../pages/welcomePage/WelcomePage'
 import List from '../pages/manage/list/List'
 import Alarm from '../pages/alarm/Alarm'
 import InsertPerson from '../pages/manage/insertPerson/InsertPerson'
+import DashBoard from "../pages/dashBoard/DashBoard";
+import MainLayout from "../layout/MainLayout";
+import PersonalDetail from "../components/description/PersonalDetail";
+import Register from "../pages/register/Register";
 
 export const routes = [
     {
@@ -15,24 +19,42 @@ export const routes = [
         element: <Login />
     },
     {
-        path: '/home',
-        element: <Home />
+        path: '/register',
+        element: <Register />
     },
     {
-        path: '/manage',
+        path: '/home',
+        element: <MainLayout />,
         children: [
             {
-                path: 'list',
-                element: <List />
+                path: 'welcomePage',
+                element: <WelcomePage />
             },
             {
-                path: 'insertPerson',
-                element: <InsertPerson/>
+                path: 'manage',
+                children: [
+                    {
+                        path: 'list',
+                        element: <List />,
+                    },
+                    {
+                        path: 'insertPerson',
+                        element: <InsertPerson/>
+                    },
+                    {
+                        path: 'dashBoard',
+                        element: <DashBoard />
+                    },
+                    {
+                        path: 'personalDetail',
+                        element: <PersonalDetail />
+                    }
+                ]
+            },
+            {
+                path: 'warning',
+                element: <Alarm />
             }
         ]
     },
-    {
-        path: 'warning',
-        element: <Alarm />
-    }
 ]

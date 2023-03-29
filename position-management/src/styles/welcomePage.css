@@ -16,8 +16,8 @@
 
 #imageFrame{
     border: 0.3rem solid darkblue;
-    min-width: 15rem;
-    min-height: 30rem;
+    min-width: 20rem;
+    min-height: 35rem;
     border-radius: 1rem;
 }
 

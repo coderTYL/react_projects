@@ -1,11 +1,14 @@
 import React from 'react'
-import MainLayout from './layout/MainLayout'
+import { useRoutes } from 'react-router-dom';
 import './styles/App.css';
+import { routes } from './router/routes';
+
 
 export default function App() {
+  const elements = useRoutes(routes);
   return (
-    <div>
-      <MainLayout />
+    <div id='app'>
+       {elements}
     </div>
   )
 }

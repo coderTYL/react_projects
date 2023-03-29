@@ -1,9 +1,9 @@
 import React from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import '../../styles/home.css';
+import '../../styles/welcomePage.css';
 
-export default function Home() {
+export default function welcomePage() {
   const addEvent = () => {
     console.log('add event')
   }

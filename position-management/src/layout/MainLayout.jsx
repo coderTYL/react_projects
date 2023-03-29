@@ -1,16 +1,15 @@
 import { Breadcrumb, Button, Layout, Menu, theme } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { UserAddOutlined, LogoutOutlined, WarningOutlined, HomeOutlined, EditOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import '../styles/mainLayout.css';
 import { useNavigate, useRoutes } from 'react-router-dom';
-import { routes } from '../router/routes';
 import logo from '../assets/南航双图标.png';
 
 const { Header, Content, Sider } = Layout;
 const menuItems = [
     {
-        key: 'home',
+        key: 'welcomePage',
         icon: <HomeOutlined />,
         label: '首页'
     },
@@ -39,11 +38,11 @@ const menuItems = [
 
 ];
 const MainLayout = () => {
-    const elements = useRoutes(routes);
+    
     let navigate = useNavigate();
     let menuNavigate = (data) => {
         let path = data.keyPath.reverse().join('/')
-        navigate(`/${path}`);
+        navigate(`/home/${path}`);
     }
     let BreadcrumbItems = [
         {
@@ -90,7 +89,7 @@ const MainLayout = () => {
                     <img src={logo} alt="logo" width={'200vm'}/>
                 </div>
                 <div style={{ float: 'right' }} >
-                    欢迎 #nbsp;
+                    欢迎 管理员 !
                     <Button type="primary" >
                         <LogoutOutlined /> 退出
                     </Button>
@@ -140,7 +139,7 @@ const MainLayout = () => {
                             alignItems: 'center'
                         }}
                     >
-                        {elements}
+                        <Outlet />
                     </Content>
                 </Layout>
             </Layout>

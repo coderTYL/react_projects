@@ -3,19 +3,36 @@ import { Button, Checkbox, Form, Input, message } from 'antd';
 import '../../styles/login.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../../utils/baseURL';
 
 const Login = () => {
-  const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
-  /* if (isLogin) {
-    message.success('登录成功', 2, ()=>{navigate('/home')});
-  }else {
-    message.error('登录失败', 2, ()=>{navigate('/')});
-  } */
-
+  
+  let register = () => { navigate('/register') };
   const onFinish = (values) => {
-    setIsLogin = true;
-    console.log('Received values of form: ', values);
+    console.log(values);
+    fetch(
+      `${BASE_URL}/login`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values.username),
+      }
+    ).then(
+      (response) => { return response.json() }
+    ).then(
+      (data) => {
+        if (values.password === data) {
+          message.success('登录成功', 2, ()=>{navigate('/home')});
+        }else {
+          message.error('登录失败', 2, ()=>{navigate('/')});
+        }
+      }
+    ).catch(
+        (error) => { console.log(error); }
+    );
   };
   return (
     <Form
@@ -31,42 +48,38 @@ const Login = () => {
         rules={[
           {
             required: true,
-            message: 'Please input your Username!',
+            message: '用户名不可为空',
           },
         ]}
       >
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="用户名" />
       </Form.Item>
       <Form.Item
         name="password"
         rules={[
           {
             required: true,
-            message: 'Please input your Password!',
+            message: '密码不可为空',
           },
         ]}
       >
         <Input
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
-          placeholder="Password"
+          placeholder="密码"
         />
       </Form.Item>
       <Form.Item>
         <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox>记住我</Checkbox>
         </Form.Item>
-
-        <a className="login-form-forgot" href=" ">
-          Forgot password
-        </a>
+        <Button className="login-form-register" type='link' onClick={register}>注册管理员</Button>
       </Form.Item>
 
       <Form.Item>
         <Button type="primary" htmlType="submit" className="login-form-button">
-          Log in
+          登录
         </Button>
-        Or <a href=" ">register now!</a>
       </Form.Item>
     </Form>
   );

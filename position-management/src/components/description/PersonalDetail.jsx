@@ -7,7 +7,6 @@ const PersonalDetail = () => {
 
   let location = useLocation();
   let currentEmployeeID = location.state;
-  console.log(currentEmployeeID)
 
   useEffect(
     () => {
@@ -29,7 +28,7 @@ const PersonalDetail = () => {
       ).catch(
         (error) => { console.log(error);}
       );
-}
+  }
 );
 
 return (

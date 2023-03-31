@@ -1,16 +1,13 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import '../../styles/login.css';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../../utils/baseURL';
 
 const Login = () => {
   const navigate = useNavigate();
-  
   let register = () => { navigate('/register') };
   const onFinish = (values) => {
-    console.log(values);
     fetch(
       `${BASE_URL}/login`,
       {
@@ -18,13 +15,14 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values.username),
+        body: JSON.stringify(values),
       }
-    ).then(
-      (response) => { return response.json() }
-    ).then(
-      (data) => {
-        if (values.password === data) {
+      ).then(
+        (response) => { return response.json() }
+        ).then(
+          (data) => {
+        console.log(data);
+        if (data) {
           message.success('登录成功', 2, ()=>{navigate('/home')});
         }else {
           message.error('登录失败', 2, ()=>{navigate('/')});

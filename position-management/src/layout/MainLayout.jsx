@@ -95,7 +95,7 @@ const MainLayout = () => {
                     </Button>
                 </div>
             </Header>
-            <Layout style={{color: 'darkBlue', background: '#0093d0'}}>
+            <Layout style={{color: 'darkBlue', background: '#1890ff'}}>
                 <Sider
                     width={200}
                     style={{
@@ -104,8 +104,7 @@ const MainLayout = () => {
                 >
                     <Menu
                         mode="inline"
-                        defaultSelectedKeys={['1']}
-                        defaultOpenKeys={['sub1']}
+                        defaultSelectedKeys={['welcomePage']}
                         style={{
                             height: '100%',
                             borderRight: 0,
@@ -117,7 +116,7 @@ const MainLayout = () => {
                 <Layout
                     style={{
                         padding: '0 24px 24px',
-                        background: '#0093d0',
+                        background: '#1890ff',
                     }}
                 >
                     <Breadcrumb

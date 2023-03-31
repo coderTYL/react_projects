@@ -24,7 +24,7 @@ export const routes = [
     },
     {
         path: '/home',
-        element: <MainLayout />,
+        element: <MainLayout />, 
         children: [
             {
                 path: 'welcomePage',

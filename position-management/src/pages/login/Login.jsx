@@ -2,36 +2,23 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import '../../styles/login.css';
 import { useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../../utils/baseURL';
+import { loginApi } from '../../api/loginApi';
 
 const Login = () => {
   const navigate = useNavigate();
   let register = () => { navigate('/register') };
   const onFinish = (values) => {
-    fetch(
-      `${BASE_URL}/login`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      }
-      ).then(
-        (response) => { return response.json() }
-        ).then(
-          (data) => {
-        console.log(data);
+    let josnValues = JSON.stringify(values);
+    loginApi(josnValues).then(
+      (data) =>{
         if (data) {
           message.success('登录成功', 2, ()=>{navigate('/home')});
         }else {
           message.error('登录失败', 2, ()=>{navigate('/')});
         }
       }
-    ).catch(
-        (error) => { console.log(error); }
     );
-  };
+  }
   return (
     <Form
       name="normal_login"

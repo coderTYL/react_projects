@@ -1,5 +1,6 @@
 import axios from "axios";
-import {BASE_URL} from "./baseURL";
+import { BASE_URL } from "./baseURL";
+import { getToken } from "./tokenUtil";
 
 /**
  * 网络请求配置
@@ -10,12 +11,19 @@ axios.defaults.baseURL = BASE_URL;
 
 /**
  * http request 拦截器
+ * 前后端分离开发过程中，由于网络请求跨域，POST不可使用json格式传输数据，服务器接收数据为 null
+ * 此情况下改变 axios 的默认内容格式为 x-www-form-urlencoded 即可正常发送
+ * 同时无需将数据进行 JSON 转化。
  */
 axios.interceptors.request.use(
   (config) => {
-    config.data = JSON.stringify(config.data);
+    /* config.data = JSON.stringify(config.data); */
     config.headers = {
-      "Content-Type": "application/json",
+      /* 注意设置认证信息时，在 Bearer 后加一个空格，否则报错 */
+      'Authorization': 'Bearer ' + getToken(),
+      
+      /* "Content-Type": "application/json", */
+      "Content-Type": "application/x-www-form-urlencoded",
     };
     return config;
   },
@@ -48,11 +56,11 @@ axios.interceptors.response.use(
 export function get(url, params = {}) {
   return new Promise((resolve, reject) => {
     axios.get(url, {
-        params: params,
-      }).then((response) => {
-        landing(url, params, response.data);
-        resolve(response.data);
-      })
+      params: params,
+    }).then((response) => {
+      landing(url, params, response.data);
+      resolve(response.data);
+    })
       .catch((error) => {
         reject(error);
       });
@@ -70,7 +78,6 @@ export function post(url, data) {
   return new Promise((resolve, reject) => {
     axios.post(url, data).then(
       (response) => {
-        //关闭进度条
         resolve(response.data);
       },
       (err) => {
@@ -122,7 +129,7 @@ export function put(url, data = {}) {
 }
 
 //统一接口处理，返回数据
-export default function http (fecth, url, param){
+export default function http(fecth, url, param) {
   return new Promise((resolve, reject) => {
     switch (fecth) {
       case "get":

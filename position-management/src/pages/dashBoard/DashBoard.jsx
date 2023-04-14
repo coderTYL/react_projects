@@ -2,6 +2,7 @@ import { Button, Card, Space } from 'antd';
 import React, { lazy, Suspense } from 'react';
 import PersonalInfo from '../../components/description/PersonalInfo';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Loading from '../../components/Loading';
 
 const GaugeChartContainer = lazy(() => { return import('../../components/charts/GaugeChartContainer') });
 const LineChartContainer = lazy(() => { return import('../../components/charts/LineChartContainer') });
@@ -16,7 +17,7 @@ export default function DashBoard(props) {
     navigate('/home/manage/personalDetail', { state: currentEmployeeID });
   };
   return (
-    <Suspense fallback={<div>loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <Space direction='vertical' style={{ width: '100%', height: '100%', justifyContent: 'space-around' }}>
         <Space direction='column' style={{ width: '100%', height: '100%', justifyContent: 'space-around' }}>
           <Card

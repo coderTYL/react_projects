@@ -3,18 +3,19 @@ import { Button, Checkbox, Form, Input, message } from 'antd';
 import '../../styles/login.css';
 import { useNavigate } from 'react-router-dom';
 import { loginApi } from '../../api/loginApi';
+import { setToken } from '../../utils/tokenUtil';
 
 const Login = () => {
   const navigate = useNavigate();
   let register = () => { navigate('/register') };
   const onFinish = (values) => {
-    let josnValues = JSON.stringify(values);
-    loginApi(josnValues).then(
+    loginApi(values).then(
       (data) =>{
-        if (data) {
-          message.success('登录成功', 2, ()=>{navigate('/home')});
+        if (data.code === 1) {
+          setToken(data.token);
+          message.success('登录成功', 2, ()=>{navigate('/home', {state: data.data.name})});
         }else {
-          message.error('登录失败', 2, ()=>{navigate('/')});
+          message.error(data.message || '管理员工号错误', 2, ()=>{navigate('/')});
         }
       }
     );

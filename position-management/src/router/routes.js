@@ -8,6 +8,7 @@ import DashBoard from "../pages/dashBoard/DashBoard";
 import MainLayout from "../layout/MainLayout";
 import PersonalDetail from "../components/description/PersonalDetail";
 import Register from "../pages/register/Register";
+import TypeList from "../components/typeList/TypeList";
 
 export const routes = [
     {
@@ -48,6 +49,15 @@ export const routes = [
                     {
                         path: 'personalDetail',
                         element: <PersonalDetail />
+                    }
+                ]
+            },
+            {
+                path: 'dimension',
+                children: [
+                    {
+                        path: 'typeList',
+                        element: <TypeList />
                     }
                 ]
             },

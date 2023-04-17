@@ -4,64 +4,82 @@ import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { UserAddOutlined, OrderedListOutlined, LogoutOutlined, WarningOutlined, HomeOutlined, EditOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import '../styles/mainLayout.css';
 import { useNavigate, useRoutes } from 'react-router-dom';
+import {dimensionApi} from '../api/dimensionApi.js';
 import logo from '../assets/南航双图标.png';
 import { clearToken, hasToken } from '../utils/tokenUtil';
+import { useDispatch, useSelector } from 'react-redux';
+import { add, fetch } from '../redux/fetchDimensionSlice';
 
 const { Header, Content, Sider } = Layout;
+
+function getItem(label, key, icon, children, type) {
+    return {
+        key,
+        icon,
+        children,
+        label,
+        type,
+    };
+}
 const MainLayout = () => {
-    const [menuItems, setMenuItems] = useState(
-        [
-            {
-                key: 'welcomePage',
-                icon: <HomeOutlined />,
-                label: '首页'
-            },
-            {
-                key: 'manage',
-                icon: <EditOutlined />,
-                label: '管理',
-                children: [
-                    {
-                        key: 'list',
-                        icon: <UnorderedListOutlined />,
-                        label: '查看'
-                    },
-                    {
-                        key: 'insertPerson',
-                        icon: <UserAddOutlined />,
-                        label: '添加人员'
-                    }
-                ]
-            },
-            {
-                key: 'dimension',
-                icon: <OrderedListOutlined />,
-                label: '维度',
-                children: [
+    const dimensionItems = useSelector((state)=> console.log(state));
+    const dispatch = useDispatch();
 
-                ]
-
-            },
-            {
-                key: 'warning',
-                icon: <WarningOutlined />,
-                label: '预警信息'
-            }
-
-        ]
-    )
-    const [isLogin, setIsLogin] = useState(hasToken());
-    const {state} = useLocation();
-    const navigate = useNavigate();
-    /* useEffect(
+    useEffect(
         ()=>{
             dimensionApi().then(
-                (data)=>{
+                (data) => {
+                    let array = data.data.map(
+                        (element)=>{
+                            return getItem(element.name, element.id);
+                        }
+                    )
                     
                 }
             )
-        }, [menuItems]
-    ); */
+        },[]
+    );
+    
+    const menuItems =
+        [
+            getItem('首页', 'welcomePage', <HomeOutlined />),
+            getItem(
+                '管理',
+                'manage',
+                <EditOutlined />,
+                [
+                    getItem(
+                        '查看',
+                        'list',
+                        <UnorderedListOutlined />
+                    ),
+                    getItem(
+                        '添加人员',
+                        'insertPerson',
+                        <UserAddOutlined />
+                    ),
+                ]
+            ),
+            getItem(
+                '维度',
+                'dimension',
+                <OrderedListOutlined />,
+                dimensionItems
+
+            ),
+            getItem(
+                '预警信息',
+                'warning',
+                <WarningOutlined />
+
+            ),
+
+
+        ];
+    const [isLogin, setIsLogin] = useState(hasToken());
+    const { state } = useLocation();
+    const navigate = useNavigate();
+
 
     let menuNavigate = (data) => {
         let path = data.keyPath.reverse().join('/')
@@ -104,12 +122,12 @@ const MainLayout = () => {
     } = theme.useToken();
 
     /* 定义管理员退出登录方法 */
-    const signOut = ()=>{
+    const signOut = () => {
         clearToken();
         setIsLogin(false);
     }
 
-    return isLogin? (
+    return isLogin ? (
         <Layout style={{ minHeight: '100vh' }}>
             <Header className="header" style={{ backgroundColor: 'white' }}>
                 <div className="logo" style={{
@@ -119,7 +137,7 @@ const MainLayout = () => {
                     <img src={logo} alt="logo" width={'200vm'} />
                 </div>
                 <Space style={{ float: 'right' }} >
-                    欢迎{state} 
+                    欢迎{state}
                     <Button type="primary" onClick={signOut}>
                         <LogoutOutlined />
                     </Button>
@@ -135,7 +153,7 @@ const MainLayout = () => {
                     <Menu
                         mode="inline"
                         defaultSelectedKeys={['welcomePage']}
-                        
+
                         style={{
                             height: '100%',
                             borderRight: 0,
@@ -174,6 +192,6 @@ const MainLayout = () => {
                 </Layout>
             </Layout>
         </Layout>
-    ): <Navigate to={'/login'} />
+    ) : <Navigate to={'/login'} />
 };
 export default MainLayout;

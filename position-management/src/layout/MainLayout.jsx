@@ -4,11 +4,11 @@ import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { UserAddOutlined, OrderedListOutlined, LogoutOutlined, WarningOutlined, HomeOutlined, EditOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import '../styles/mainLayout.css';
 import { useNavigate, useRoutes } from 'react-router-dom';
-import {dimensionApi} from '../api/dimensionApi.js';
+import { dimensionApi } from '../api/dimensionApi.js';
 import logo from '../assets/南航双图标.png';
 import { clearToken, hasToken } from '../utils/tokenUtil';
 import { useDispatch, useSelector } from 'react-redux';
-import { add, fetch } from '../redux/fetchDimensionSlice';
+import { add } from '../redux/dimensionOperatorSlice';
 
 const { Header, Content, Sider } = Layout;
 
@@ -22,24 +22,24 @@ function getItem(label, key, icon, children, type) {
     };
 }
 const MainLayout = () => {
-    const dimensionItems = useSelector((state)=> console.log(state));
     const dispatch = useDispatch();
+    const dimensionItems = useSelector((state) => state.dimensionItems.dimensionItems[0]);
 
     useEffect(
-        ()=>{
+        () => {
             dimensionApi().then(
                 (data) => {
                     let array = data.data.map(
-                        (element)=>{
+                        (element) => {
                             return getItem(element.name, element.id);
                         }
                     )
-                    
+                    dispatch(add(array));
                 }
             )
-        },[]
+        }, []
     );
-    
+
     const menuItems =
         [
             getItem('首页', 'welcomePage', <HomeOutlined />),

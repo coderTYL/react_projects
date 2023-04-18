@@ -1,14 +1,9 @@
-import { Form, InputNumber,Input, Popconfirm, Table, Typography } from 'antd';
-import { useState } from 'react';
-const originData = [];
-for (let i = 0; i < 100; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
+import { Form, InputNumber,Input, Popconfirm, Table, Typography, Button, Modal, Select, Space } from 'antd';
+import { useEffect, useState, useRef } from 'react';
+import { typeApi } from '../../api/typeApi';
+import TextArea from 'antd/es/input/TextArea';
+
+
 const EditableCell = ({
   editing,
   dataIndex,
@@ -31,7 +26,7 @@ const EditableCell = ({
           rules={[
             {
               required: true,
-              message: `Please Input ${title}!`,
+              message: `请输入 ${title}!`,
             },
           ]}
         >
@@ -43,16 +38,59 @@ const EditableCell = ({
     </td>
   );
 };
-const TypeList = () => {
+const TypeList = (props) => {
+  const originData = [];
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
   const isEditing = (record) => record.key === editingKey;
+
+  useEffect(
+    ()=>{
+    typeApi({dimensionID: props.dimensionID}).then(
+      (data)=>{
+      let array = data.data.map(
+        (item)=>{
+          return {
+            key: `${item.dimensionID + item.id}`,
+            id: item.id,
+            dimensionID: item.dimensionID,
+            definition: item.definition,
+            score: item.score,
+          }
+        }
+        );
+        setData(array);
+      }
+      );
+    }, [props]
+  );
+
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const formRef = useRef();
+  let showModal = () => {
+    setOpen(true);
+  };
+  let handleOk = (info) => {
+    setConfirmLoading(true);
+   // 此处上传数据
+   // 设置类型自动获取
+    setOpen(false);
+  };
+  let handleCancel = () => {
+    setOpen(false);
+  };
+  const onReset = () => {
+    formRef.current.resetFields();
+  };
+
   const edit = (record) => {
     form.setFieldsValue({
-      name: '',
-      age: '',
-      address: '',
+      id: '',
+      dimensionID: '',
+      definition: '',
+      score: '',
       ...record,
     });
     setEditingKey(record.key);
@@ -84,25 +122,31 @@ const TypeList = () => {
   };
   const columns = [
     {
-      title: 'name',
-      dataIndex: 'name',
-      width: '25%',
+      title: '序号',
+      dataIndex: 'id',
+      width: '10%',
       editable: true,
     },
     {
-      title: 'age',
-      dataIndex: 'age',
-      width: '15%',
+      title: '维度类型',
+      dataIndex: 'dimensionID',
+      width: '10%',
       editable: true,
     },
     {
-      title: 'address',
-      dataIndex: 'address',
-      width: '40%',
+      title: '定义',
+      dataIndex: 'definition',
+      width: '60%',
       editable: true,
     },
     {
-      title: 'operation',
+      title: '分值',
+      dataIndex: 'score',
+      width: '10%',
+      editable: true,
+    },
+    {
+      title: '操作',
       dataIndex: 'operation',
       render: (_, record) => {
         const editable = isEditing(record);
@@ -114,15 +158,15 @@ const TypeList = () => {
                 marginRight: 8,
               }}
             >
-              Save
+              保存
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+            <Popconfirm title="确认取消吗？" onConfirm={cancel}>
+              <a>取消</a>
             </Popconfirm>
           </span>
         ) : (
           <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-            Edit
+            编辑
           </Typography.Link>
         );
       },
@@ -136,7 +180,7 @@ const TypeList = () => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
+        inputType: col.dataIndex === 'id' ? 'number' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -144,8 +188,65 @@ const TypeList = () => {
     };
   });
   return (
-    <Form form={form} component={false}>
+    <Space direction='vertical'>
+    <Button
+        onClick={showModal}
+        type="primary"
+        style={{
+          marginBottom: 16,
+        }}
+      >
+        添 加
+      </Button>
+      <Modal
+          title="请填写类型信息"
+          open={open}
+          onOk={handleOk}
+          confirmLoading={confirmLoading}
+          onCancel={handleCancel}
+        >
+          <Form
+            ref={formRef}
+            labelCol={{span: 6,}}
+            wrapperCol={{span: 14,}}
+            layout='horizontal'
+            style={{maxWidth: 600}}
+          >
+            <Form.Item name={'id'} label="序号" required>
+              <Input />
+            </Form.Item>
+            
+            <Form.Item name={'dimensionID'} label="维度" required>
+              <Select>
+                <Select.Option value="A">工作作风</Select.Option>
+                <Select.Option value="B">标准落实</Select.Option>
+                <Select.Option value="C">运行管理</Select.Option>
+                <Select.Option value="D">特情处置</Select.Option>
+                <Select.Option value="E">传帮带</Select.Option>
+                <Select.Option value="F">重点工作推进</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item name={'definition'} label="定义" required>
+              <TextArea rows={3} />
+            </Form.Item>
+
+            <Form.Item name={'score'} label="分值" required>
+              <Input />
+            </Form.Item>
+            <Form.Item 
+              wrapperCol={{offset: 4}}
+            >
+              <Button htmlType="button" danger onClick={onReset}>重置</Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+    <Form form={form} component={false} >
+      
       <Table
+        style={{
+          minWidth: '100%',
+          minHeight: '100%'
+        }}
         components={{
           body: {
             cell: EditableCell,
@@ -160,12 +261,8 @@ const TypeList = () => {
         }}
       />
     </Form>
+    </Space>
   );
 };
 export default TypeList;
 
-/* .editable-row .ant-form-item-explain {
-    position: absolute;
-    top: 100%;
-    font-size: 12px;
-  } */

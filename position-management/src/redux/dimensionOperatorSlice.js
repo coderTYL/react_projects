@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const addDimensionSlice = createSlice({
-    name: 'addDimension',
+export const dimensionOperatorSlice = createSlice({
+    name: 'dimensionOperator',
     initialState: { dimensionItems: [] },
     reducers: {
        
@@ -11,5 +11,5 @@ export const addDimensionSlice = createSlice({
     }
     
 });
-export const {add} = addDimensionSlice.actions;
-export default addDimensionSlice.reducer;
+export const {add} = dimensionOperatorSlice.actions;
+export default dimensionOperatorSlice.reducer;

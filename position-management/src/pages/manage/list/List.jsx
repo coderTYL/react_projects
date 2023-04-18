@@ -8,9 +8,6 @@ import TextArea from 'antd/es/input/TextArea';
 export default function List(props) {
   let navigate = useNavigate();
   const formRef = useRef();
-  const onReset = () => {
-    formRef.current.resetFields();
-  };
   const defaultData = [
     {
       key: '1',
@@ -59,7 +56,7 @@ export default function List(props) {
     },
   ];
   const [dataSource, setDataSource] = useState(defaultData);
-
+  
   // 设置对话框状态
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -77,28 +74,31 @@ export default function List(props) {
         },
         body: JSON.stringify(info),
       }
-    ).then(
-      (response) => { return response.json(); }
+      ).then(
+        (response) => { return response.json(); }
     ).then(
       (data) => {
-        // 在控制太输出数据提交结果
+        // 在控制输出数据提交结果
         console.log(data);
         setConfirmLoading(false);
       }
-    ).catch(
-      (error) => { console.log(error); }
-    );
-    setOpen(false);
-  };
-  let handleCancel = () => {
-    setOpen(false);
-  };
-
-
-  let employeeIDForDelete = useRef([]);
-  // 组件加载时发送请求获取员工数据
-  useEffect(
-    () => {
+      ).catch(
+        (error) => { console.log(error); }
+        );
+        setOpen(false);
+      };
+      let handleCancel = () => {
+        setOpen(false);
+      };
+      
+      const onReset = () => {
+        formRef.current.resetFields();
+      };
+      
+      let employeeIDForDelete = useRef([]);
+      // 组件加载时发送请求获取员工数据
+      useEffect(
+        () => {
       let idArray = employeeIDForDelete.current;
       fetch(`${BASE_URL}/list`).then(
         (response) => { return response.json(); }

@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import addReducer from './fetchDimensionSlice';
+import dimensionItemsReducer from './dimensionOperatorSlice';
 
 export default configureStore({
     reducer: {
-        dimensionItems: addReducer,
+        dimensionItems: dimensionItemsReducer,
     },
 });

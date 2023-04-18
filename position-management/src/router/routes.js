@@ -10,6 +10,7 @@ import PersonalDetail from "../components/description/PersonalDetail";
 import Register from "../pages/register/Register";
 import TypeList from "../components/typeList/TypeList";
 
+
 export const routes = [
     {
         path: '/',

@@ -1,15 +1,12 @@
 import {
-  AutoComplete,
   Button,
-  Cascader,
   Checkbox,
-  Col,
   Form,
   Input,
-  InputNumber,
-  Row,
-  Select,
+  message,
 } from 'antd';
+import { registerApi } from '../../api/registerApi';
+import { useNavigate } from 'react-router-dom';
 
 
 const formItemLayout = {
@@ -43,9 +40,25 @@ const tailFormItemLayout = {
   },
 };
 const Register = () => {
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+    registerApi(
+      {
+        employeeID: values.employeeID,
+        name: values.name,
+        password: values.password,
+      }
+    ).then(
+      (data)=>{
+        if (data.code === 1) {
+          message.success('注册成功，返回登录页面！', 2);
+          navigate('/login');
+        }else {
+          message.error('注册失败！请联系系统管理员！');
+        }
+      }
+    )
   };
   
   return (

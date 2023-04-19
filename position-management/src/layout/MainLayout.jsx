@@ -4,14 +4,21 @@ import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { UserAddOutlined, OrderedListOutlined, LogoutOutlined, WarningOutlined, HomeOutlined, EditOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import '../styles/mainLayout.css';
 import { useNavigate, useRoutes } from 'react-router-dom';
-import { dimensionApi } from '../api/dimensionApi.js';
+import { fetchDimensionsApi } from '../api/fetchDimensionsApi.js';
 import logo from '../assets/南航双图标.png';
 import { clearToken, hasToken } from '../utils/tokenUtil';
-import { useDispatch, useSelector } from 'react-redux';
-import { add } from '../redux/dimensionOperatorSlice';
 
 const { Header, Content, Sider } = Layout;
 
+/**
+ * 
+ * @param {标签名} label 
+ * @param {以路径作为菜单key} key 
+ * @param {图标} icon 
+ * @param {子菜单} children 
+ * @param {类型} type 
+ * @returns 
+ */
 function getItem(label, key, icon, children, type) {
     return {
         key,
@@ -21,20 +28,21 @@ function getItem(label, key, icon, children, type) {
         type,
     };
 }
-const MainLayout = () => {
-    const dispatch = useDispatch();
-    const dimensionItems = useSelector((state) => state.dimensionItems.dimensionItems[0]);
+const MainLayout = (props) => {
+
+    const [dimensionItems, setDimensionItems] = useState([]);
 
     useEffect(
         () => {
-            dimensionApi().then(
+            fetchDimensionsApi().then(
                 (data) => {
                     let array = data.data.map(
                         (element) => {
-                            return getItem(element.name, element.id);
+                            return getItem(element.name, `/${element.id}`);
                         }
                     )
-                    dispatch(add(array));
+                    setDimensionItems(array);
+                    props.fetchDimensionItems(data.data);
                 }
             )
         }, []
@@ -42,34 +50,34 @@ const MainLayout = () => {
 
     const menuItems =
         [
-            getItem('首页', 'welcomePage', <HomeOutlined />),
+            getItem('首页', '/welcomePage', <HomeOutlined />),
             getItem(
                 '管理',
-                'manage',
+                '/manage',
                 <EditOutlined />,
                 [
                     getItem(
                         '查看',
-                        'list',
+                        '/list',
                         <UnorderedListOutlined />
                     ),
                     getItem(
                         '添加人员',
-                        'insertPerson',
+                        '/insertPerson',
                         <UserAddOutlined />
                     ),
                 ]
             ),
             getItem(
                 '维度',
-                'dimension',
+                '/dimension',
                 <OrderedListOutlined />,
                 dimensionItems
 
             ),
             getItem(
                 '预警信息',
-                'warning',
+                '/warning',
                 <WarningOutlined />
 
             ),
@@ -77,13 +85,12 @@ const MainLayout = () => {
 
         ];
     const [isLogin, setIsLogin] = useState(hasToken());
-    const { state } = useLocation();
+    const { state, pathname } = useLocation();
     const navigate = useNavigate();
 
-
     let menuNavigate = (data) => {
-        let path = data.keyPath.reverse().join('/')
-        navigate(`/home/${path}`);
+        let path = data.keyPath.reverse().join('')
+        navigate(`/home${path}`);
     }
     let BreadcrumbItems = [
         {
@@ -152,8 +159,8 @@ const MainLayout = () => {
                 >
                     <Menu
                         mode="inline"
-                        defaultSelectedKeys={['welcomePage']}
-
+                        defaultSelectedKeys={['/welcomePage']}
+                        /* selectedKeys={[pathname]} */
                         style={{
                             height: '100%',
                             borderRight: 0,

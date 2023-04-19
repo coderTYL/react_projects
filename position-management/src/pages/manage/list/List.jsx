@@ -56,49 +56,28 @@ export default function List(props) {
     },
   ];
   const [dataSource, setDataSource] = useState(defaultData);
-  
+
   // 设置对话框状态
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
   let showModal = () => {
     setOpen(true);
   };
   let handleOk = (info) => {
-    setConfirmLoading(true);
-    fetch(
-      `${BASE_URL}/list/insertPerson`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(info),
-      }
-      ).then(
-        (response) => { return response.json(); }
-    ).then(
-      (data) => {
-        // 在控制输出数据提交结果
-        console.log(data);
-        setConfirmLoading(false);
-      }
-      ).catch(
-        (error) => { console.log(error); }
-        );
-        setOpen(false);
-      };
-      let handleCancel = () => {
-        setOpen(false);
-      };
-      
-      const onReset = () => {
-        formRef.current.resetFields();
-      };
-      
-      let employeeIDForDelete = useRef([]);
-      // 组件加载时发送请求获取员工数据
-      useEffect(
-        () => {
+    console.log(info);
+    setOpen(false);
+  };
+  let handleCancel = () => {
+    setOpen(false);
+  };
+
+  const onReset = () => {
+    formRef.current.resetFields();
+  };
+
+  let employeeIDForDelete = useRef([]);
+  // 组件加载时发送请求获取员工数据
+  useEffect(
+    () => {
       let idArray = employeeIDForDelete.current;
       fetch(`${BASE_URL}/list`).then(
         (response) => { return response.json(); }
@@ -206,15 +185,17 @@ export default function List(props) {
           title="请填写员工信息"
           open={open}
           onOk={handleOk}
-          confirmLoading={confirmLoading}
           onCancel={handleCancel}
+          okText="确认"
+          cancelText="取消"
         >
           <Form
             ref={formRef}
-            labelCol={{span: 6,}}
-            wrapperCol={{span: 14,}}
+            preserve={false}
+            labelCol={{ span: 6, }}
+            wrapperCol={{ span: 14, }}
             layout='horizontal'
-            style={{maxWidth: 600}}
+            style={{ maxWidth: 600 }}
           >
             <Form.Item name='employeeName' label="姓名" required>
               <Input />
@@ -257,8 +238,8 @@ export default function List(props) {
             <Form.Item name={'remarks'} label="备注" >
               <TextArea rows={3} />
             </Form.Item>
-            <Form.Item 
-              wrapperCol={{offset: 4}}
+            <Form.Item
+              wrapperCol={{ offset: 4 }}
             >
               <Button htmlType="button" danger onClick={onReset}>重置</Button>
             </Form.Item>

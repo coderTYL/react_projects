@@ -1,6 +1,6 @@
 import { Form, InputNumber,Input, Popconfirm, Table, Typography, Button, Modal, Select, Space } from 'antd';
 import { useEffect, useState, useRef } from 'react';
-import { typeApi } from '../../api/typeApi';
+import { fetchTypesApi } from '../../api/fetchTypesApi';
 import TextArea from 'antd/es/input/TextArea';
 
 
@@ -47,7 +47,7 @@ const TypeList = (props) => {
 
   useEffect(
     ()=>{
-    typeApi({dimensionID: props.dimensionID}).then(
+      fetchTypesApi({dimensionID: props.dimensionID}).then(
       (data)=>{
       let array = data.data.map(
         (item)=>{

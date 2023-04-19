@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRoutes, Navigate } from 'react-router-dom';
 import './styles/App.css';
 import Login from "./pages/login/Login";
@@ -11,24 +11,27 @@ import MainLayout from "./layout/MainLayout";
 import PersonalDetail from "./components/description/PersonalDetail";
 import Register from "./pages/register/Register";
 import TypeList from "./components/typeList/TypeList";
-import { useSelector } from "react-redux";
 
 
 
 export default function App() {
+    const [dimensionItemsRoutes, setDimensionItemsRoutes] = useState([]);
 
-    const dimensionItems = useSelector((state) => state.dimensionItems.dimensionItems[0]);
-    let dimensionItemsRoutes = [];
-    if (dimensionItems !== null && dimensionItems !== undefined) {
-        dimensionItemsRoutes = dimensionItems.map(
-            (item) => {
-                return {
-                    path: item.key,
-                    element: <TypeList dimensionID={item.key} />,
-                }
+    let getRoute = (path, element)=>{
+        return {
+            path,
+            element,
+        }
+    }
+    let fetchDimensionItems = (dimensionItems)=>{
+        let routes = dimensionItems.map(
+            (item)=>{
+                return getRoute(item.id, <TypeList dimensionID={item.id} />)
             }
         );
+        setDimensionItemsRoutes(routes);
     }
+   
 
     const routes = [
         {
@@ -45,7 +48,7 @@ export default function App() {
         },
         {
             path: '/home',
-            element: <MainLayout />,
+            element: <MainLayout fetchDimensionItems={fetchDimensionItems} />,
             children: [
                 {
                     path: 'welcomePage',

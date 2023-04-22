@@ -30,7 +30,7 @@ function getItem(label, key, icon, children, type) {
 }
 const MainLayout = (props) => {
     const navigate = useNavigate();
-    const { state, pathname} = useLocation();
+    const { pathname} = useLocation();
     const [dimensionItems, setDimensionItems] = useState([]);
     useEffect(
         () => {
@@ -153,7 +153,7 @@ const MainLayout = (props) => {
                     <h1 style={{fontWeight: 'bold'}}>客 舱 部 乘 务 岗 位 管 理 系 统</h1>
                 </Space>
                 <Space style={{ float: 'right' }} >
-                    欢迎{state}
+                    欢迎! 管理员
                     <Button type="primary" onClick={signOut}>
                         <LogoutOutlined />
                     </Button>

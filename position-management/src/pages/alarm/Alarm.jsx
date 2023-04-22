@@ -1,29 +1,35 @@
 import { Table, Space, Button } from 'antd';
-import {ZoomInOutlined} from '@ant-design/icons';
-import React from 'react'
+import { ZoomInOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { warnApi } from '../../api/warnApi';
 
 export default function Alarm() {
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
   const competencyDetail = (employeeID) => {
     navigate('/home/manage/dashBoard', { state: employeeID });
   }
-  const data = [
-    {
-      employeeID: '0',
-      name: '12',
-      position: '12',
-      departmentID: '12',
-      competency: '100'
-    },
-    {
-      employeeID: '0',
-      name: '12',
-      position: '12',
-      departmentID: '12',
-      competency: '120'
-    }
-  ];
+  useEffect(
+    () => {
+      warnApi().then(
+        (data) => {
+          let personList = data.data.map(
+            (employee) => {
+              return {
+                employeeID: employee.id,
+                name: employee.name,
+                position: employee.position,
+                department: employee.department,
+                competency: employee.competency
+              }
+            }
+          )
+          setData(personList);
+        }
+      )
+    }, []
+  );
   const columns = [
     {
       title: '员工号',
@@ -48,8 +54,8 @@ export default function Alarm() {
     },
     {
       title: '部门',
-      dataIndex: 'departmentID',
-      key: 'departmentID',
+      dataIndex: 'department',
+      key: 'department',
       align: 'center',
       width: '15%'
     },
@@ -60,7 +66,7 @@ export default function Alarm() {
       align: 'center',
       width: '15%',
       sorter: (a, b) => a.competency - b.competency,
-            sortDirections: ['descend', 'ascend'],
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: "操作",
@@ -76,7 +82,7 @@ export default function Alarm() {
   ]
   return (
     <>
-      <Table columns={columns} dataSource={data} style={{ minWidth: '100%', minHeight: '100%' }}/>
+      <Table columns={columns} dataSource={data} style={{ minWidth: '100%', minHeight: '100%' }} pagination={{pageSize: 8}} />
     </>
 
   )

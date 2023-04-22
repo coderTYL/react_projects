@@ -1,19 +1,54 @@
 import { SearchOutlined, PlusOutlined, ZoomInOutlined } from '@ant-design/icons';
 import { Button, Input, Space, Table, Form, Modal, Select, DatePicker, InputNumber } from 'antd';
-import { useRef, useState } from 'react';
+import { message } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import React from 'react';
+import { addEventApi } from '../../api/addEventApi';
+import { fetchEventsApi } from '../../api/fetchEventsApi';
 
 const { TextArea } = Input;
 
-const data = [
-
-]
-
 export default function Event() {
+    const[isUpdate,setIsUpdate] = useState('false');
+    const [dataSource, setDataSource] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
+
+    useEffect(
+        ()=>{
+            fetchEventsApi().then(
+                (data)=>{
+                    if (data.code === 1) {
+                        let dataSource = data.data.map(
+                            (event)=>{
+                                let dateFormat = (date)=>{
+                                    let d = new Date(date);
+                                    let year = d.getFullYear() + '年';
+                                    let month = d.getMonth() +1 + '月';
+                                    let day = d.getDate() + '日';
+                                    return [year, month, day].join('');
+                                }
+                                return {
+                                    key: event.id,
+                                    eventID: event.id,
+                                    date: dateFormat(event.dateOfOccurrence),
+                                    dimensionID: event.dimensionID,
+                                    employeeID: event.employeeID,
+                                    name: event.employeeName,
+                                    position: event.employeePosition,
+                                    department: event.departmentName,
+                                }
+                            }
+                        );
+                        setDataSource(dataSource);
+                    }
+                }
+            )
+        }, [isUpdate]
+    );
+
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         setSearchText(selectedKeys[0]);
@@ -23,14 +58,6 @@ export default function Event() {
         clearFilters();
         setSearchText('');
     };
-
-    const onChange = (value, dateString) => {
-        console.log('Selected Time: ', value);
-        console.log('Formatted Selected Time: ', dateString);
-      };
-      const onOk = (value) => {
-        console.log('onOk: ', value);
-      };
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div
@@ -184,20 +211,21 @@ export default function Event() {
         },
         {
             title: '部门',
-            dataIndex: 'departmentID',
-            key: 'departmentID',
+            dataIndex: 'department',
+            key: 'department',
             width: '10%',
             align: 'center',
-            ...getColumnSearchProps('departmentID'),
+            ...getColumnSearchProps('department'),
         },
         {
             title: "操作",
             align: 'center',
             key: "action",
             render: (_, record) => {
-                return data.length >= 1 ? (
+                return dataSource.length >= 1 ? (
                     <Space>
                         <Button type='primary' icon={<ZoomInOutlined />} size='small' onClick={() => { eventDetail(record.eventID) }}>详情</Button>
+
                     </Space>) : null
             }
         }
@@ -208,14 +236,30 @@ export default function Event() {
     let showModal = () => {
         setOpen(true);
     };
-    let handleOk = (info) => {
+    const handleOk = () => {
+        let value = formRef.current.getFieldsValue();
+        let dateTime = value.date.format('YYYY-MM-DD');
+        let event = {
+            ...value,
+            date: dateTime,
+        }
+        addEventApi(event).then(
+            (data)=>{
+                if (data.code === 1) {
+                    message.success('添加成功！');
+                }else {
+                    message.error('数据错误，请重试！');
+                }
+            }
+        )
+        formRef.current.resetFields();
         setOpen(false);
     };
     let handleCancel = () => {
         setOpen(false);
     };
     const onFinish = (value)=>{
-        // modal 中添加事件
+        
     }
     const onReset = () => {
         formRef.current.resetFields();
@@ -282,7 +326,7 @@ export default function Event() {
                     </Form>
                 </Modal>
             </div>
-            <Table columns={columns} dataSource={data} />
+            <Table columns={columns} dataSource={dataSource} pagination={{pageSize: 8}} />
         </Space>
     )
 }

@@ -1,15 +1,17 @@
 import React from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import '../../styles/welcomePage.css';
+import { useNavigate } from 'react-router-dom';
 
-export default function welcomePage() {
-  const addEvent = () => {
-    console.log('add event')
+export default function WelcomePage() {
+  const navigate = useNavigate();
+  const addEvent = () => {  
+    navigate('/home/addEvent');
   }
   return (
     <div id='homeContainer'>
-      <div id='images'>
+      <Space id='images'>
         <div id='imageFrame'>
           <img src=" " alt="风采展示" />
         </div>
@@ -19,7 +21,7 @@ export default function welcomePage() {
         <div id='imageFrame'>
           <img src=" " alt="风采展示" />
         </div>
-      </div>
+      </Space>
       <article id='instruction'>
         <h1>使用说明：</h1>
         <p>..................</p>

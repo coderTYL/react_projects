@@ -1,7 +1,7 @@
 import { Breadcrumb, Button, Layout, Menu, Space, theme } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
-import { UserAddOutlined, OrderedListOutlined, LogoutOutlined, WarningOutlined, HomeOutlined, EditOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { UserAddOutlined, FileSearchOutlined, OrderedListOutlined, LogoutOutlined, WarningOutlined, HomeOutlined, EditOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import '../styles/mainLayout.css';
 import { useNavigate, useRoutes } from 'react-router-dom';
 import { fetchDimensionsApi } from '../api/fetchDimensionsApi.js';
@@ -29,9 +29,9 @@ function getItem(label, key, icon, children, type) {
     };
 }
 const MainLayout = (props) => {
-
+    const navigate = useNavigate();
+    const { state, pathname} = useLocation();
     const [dimensionItems, setDimensionItems] = useState([]);
-
     useEffect(
         () => {
             fetchDimensionsApi().then(
@@ -52,7 +52,7 @@ const MainLayout = (props) => {
         [
             getItem('首页', '/welcomePage', <HomeOutlined />),
             getItem(
-                '管理',
+                '员工管理',
                 '/manage',
                 <EditOutlined />,
                 [
@@ -69,11 +69,16 @@ const MainLayout = (props) => {
                 ]
             ),
             getItem(
-                '维度',
+                '维度检索',
                 '/dimension',
                 <OrderedListOutlined />,
                 dimensionItems
 
+            ),
+            getItem(
+                '事件管理',
+                '/event',
+                <FileSearchOutlined />
             ),
             getItem(
                 '预警信息',
@@ -85,8 +90,6 @@ const MainLayout = (props) => {
 
         ];
     const [isLogin, setIsLogin] = useState(hasToken());
-    const { state, pathname } = useLocation();
-    const navigate = useNavigate();
 
     let menuNavigate = (data) => {
         let path = data.keyPath.reverse().join('')
@@ -136,13 +139,19 @@ const MainLayout = (props) => {
 
     return isLogin ? (
         <Layout style={{ minHeight: '100vh' }}>
-            <Header className="header" style={{ backgroundColor: 'white' }}>
-                <div className="logo" style={{
-                    float: 'left',
-                    margin: 'auto',
-                }}>
-                    <img src={logo} alt="logo" width={'200vm'} />
-                </div>
+            <Header className="header" style={{
+                backgroundColor: 'white',
+
+            }}>
+                <Space size={'large'}>
+                    <div className="logo" style={{
+                        float: 'left',
+                        margin: 'auto',
+                    }}>
+                        <img src={logo} alt="logo" width={'200vm'} />
+                    </div>
+                    <h1 style={{fontWeight: 'bold'}}>客 舱 部 乘 务 岗 位 管 理 系 统</h1>
+                </Space>
                 <Space style={{ float: 'right' }} >
                     欢迎{state}
                     <Button type="primary" onClick={signOut}>
@@ -159,7 +168,7 @@ const MainLayout = (props) => {
                 >
                     <Menu
                         mode="inline"
-                        defaultSelectedKeys={['/welcomePage']}
+                        defaultSelectedKeys={[pathname]}
                         /* selectedKeys={[pathname]} */
                         style={{
                             height: '100%',

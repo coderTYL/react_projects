@@ -11,6 +11,8 @@ import MainLayout from "./layout/MainLayout";
 import PersonalDetail from "./components/description/PersonalDetail";
 import Register from "./pages/register/Register";
 import TypeList from "./components/typeList/TypeList";
+import Event from './pages/eventPage/Event';
+import AddEventPage from './pages/eventPage/AddEventPage';
 
 
 
@@ -51,6 +53,10 @@ export default function App() {
             element: <MainLayout fetchDimensionItems={fetchDimensionItems} />,
             children: [
                 {
+                    path: '',
+                    element: <Navigate to='welcomePage' />
+                },
+                {
                     path: 'welcomePage',
                     element: <WelcomePage />
                 },
@@ -78,6 +84,14 @@ export default function App() {
                 {
                     path: 'dimension',
                     children: dimensionItemsRoutes
+                },
+                {
+                    path: 'event',
+                    element: <Event />,
+                },
+                {
+                    path: 'addEvent',
+                    element: <AddEventPage />
                 },
                 {
                     path: 'warning',

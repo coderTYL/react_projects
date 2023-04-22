@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Table, Button, Popconfirm, Modal, Input, Space, Form, Upload, Select } from 'antd';
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, ZoomInOutlined, PlusOutlined } from '@ant-design/icons';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../../../utils/baseURL';
 import TextArea from 'antd/es/input/TextArea';
@@ -164,7 +164,7 @@ export default function List(props) {
       render: (_, record) => {
         return dataSource.length >= 1 ? (
           <Space>
-            <Button type='primary' icon={<EditOutlined />} size='small' onClick={() => { competencyDetail(record.employeeID) }}>详情</Button>
+            <Button type='primary' icon={<ZoomInOutlined />} size='small' onClick={() => { competencyDetail(record.employeeID) }}>详情</Button>
             <Popconfirm title="确定删除？" okText='是' cancelText='否' onConfirm={() => handleDelete(record.employeeID)}>
               <Button
                 size='small'

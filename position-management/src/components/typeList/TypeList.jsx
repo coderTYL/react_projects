@@ -124,29 +124,39 @@ const TypeList = (props) => {
     {
       title: '序号',
       dataIndex: 'id',
+      key: 'id',
       width: '10%',
+      align: 'center',
       editable: true,
     },
     {
       title: '维度类型',
+      key: 'dimensionID',
       dataIndex: 'dimensionID',
       width: '10%',
+      align: 'center',
       editable: true,
     },
     {
       title: '定义',
+      key: 'definition',
       dataIndex: 'definition',
       width: '60%',
+      align: 'center',
       editable: true,
     },
     {
       title: '分值',
+      key: 'score',
       dataIndex: 'score',
+      align: 'center',
       width: '10%',
       editable: true,
     },
     {
       title: '操作',
+      key: 'action',
+      align: 'center',
       dataIndex: 'operation',
       render: (_, record) => {
         const editable = isEditing(record);
@@ -188,7 +198,10 @@ const TypeList = (props) => {
     };
   });
   return (
-    <Space direction='vertical'>
+    <Space direction='vertical' style={{
+      minWidth: '100%',
+      minHeight: '100%'
+    }}>
     <Button
         onClick={showModal}
         type="primary"
@@ -243,10 +256,7 @@ const TypeList = (props) => {
     <Form form={form} component={false} >
       
       <Table
-        style={{
-          minWidth: '100%',
-          minHeight: '100%'
-        }}
+        
         components={{
           body: {
             cell: EditableCell,

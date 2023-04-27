@@ -10,23 +10,23 @@ import { fetchEventsApi } from '../../api/fetchEventsApi';
 const { TextArea } = Input;
 
 export default function Event() {
-    const[isUpdate,setIsUpdate] = useState('false');
+    const [updateCount, setUpdateCount] = useState(0);
     const [dataSource, setDataSource] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
 
     useEffect(
-        ()=>{
+        () => {
             fetchEventsApi().then(
-                (data)=>{
+                (data) => {
                     if (data.code === 1) {
                         let dataSource = data.data.map(
-                            (event)=>{
-                                let dateFormat = (date)=>{
+                            (event) => {
+                                let dateFormat = (date) => {
                                     let d = new Date(date);
                                     let year = d.getFullYear() + '年';
-                                    let month = d.getMonth() +1 + '月';
+                                    let month = d.getMonth() + 1 + '月';
                                     let day = d.getDate() + '日';
                                     return [year, month, day].join('');
                                 }
@@ -46,7 +46,7 @@ export default function Event() {
                     }
                 }
             )
-        }, [isUpdate]
+        }, [updateCount]
     );
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -244,23 +244,22 @@ export default function Event() {
             date: dateTime,
         }
         addEventApi(event).then(
-            (data)=>{
+            (data) => {
                 if (data.code === 1) {
                     message.success('添加成功！');
-                }else {
+                    setUpdateCount(updateCount + 1);
+                    formRef.current.resetFields();
+                } else {
                     message.error('数据错误，请重试！');
                 }
             }
         )
-        formRef.current.resetFields();
+        
         setOpen(false);
     };
     let handleCancel = () => {
         setOpen(false);
     };
-    const onFinish = (value)=>{
-        
-    }
     const onReset = () => {
         formRef.current.resetFields();
     };
@@ -288,17 +287,16 @@ export default function Event() {
                         labelCol={{ span: 6, }}
                         wrapperCol={{ span: 14, }}
                         layout='horizontal'
-                        style={{maxWidth: 600 }}
-                        onFinish={onFinish}
+                        style={{ maxWidth: 600 }}
                     >
                         <Form.Item name={'employeeID'} label="员工号" required>
-                            <Input />
+                            <Input style={{width: '55%',}} />
                         </Form.Item>
                         <Form.Item name='name' label="姓名" required>
-                            <Input />
+                            <Input  style={{width: '55%',}}/>
                         </Form.Item>
-                        <Form.Item name={'date'} label= '日期' required>
-                        <DatePicker />
+                        <Form.Item name={'date'} label='日期' required>
+                            <DatePicker />
                         </Form.Item>
 
                         <Form.Item name={'dimensionID'} label="维度" required>
@@ -312,7 +310,7 @@ export default function Event() {
                             </Select>
                         </Form.Item>
                         <Form.Item name={'typeID'} label='类型序号' required>
-                            <InputNumber min={1} />
+                            <InputNumber min={1} style={{width: '30%',}} />
                         </Form.Item>
 
                         <Form.Item name={'description'} label="事件描述" >
@@ -326,7 +324,7 @@ export default function Event() {
                     </Form>
                 </Modal>
             </div>
-            <Table columns={columns} dataSource={dataSource} pagination={{pageSize: 8}} />
+            <Table columns={columns} dataSource={dataSource} pagination={{ pageSize: 8 }} />
         </Space>
     )
 }

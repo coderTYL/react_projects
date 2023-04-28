@@ -6,7 +6,8 @@ import { CanvasRenderer } from 'echarts/renderers';
 
 import React, { useEffect } from 'react'
 
-export default function LineChartContainer() {
+export default function LineChartContainer(props) {
+    console.log(props);
     useEffect(
         () => {
             echarts.use([DatasetComponent,TooltipComponent, GridComponent,LegendComponent, LineChart, CanvasRenderer, UniversalTransition]);

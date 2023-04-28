@@ -3,7 +3,7 @@ import { GaugeChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import React, { useEffect } from 'react'
 
-export default function GaugeChartContainer() {
+export default function GaugeChartContainer(props) {
   useEffect(
     () => {
       echarts.use([GaugeChart, CanvasRenderer]);
@@ -89,7 +89,7 @@ export default function GaugeChartContainer() {
               },
               data: [
                 {
-                  value: 1,
+                  value: 99.5 /100,
                   name: '胜任力'
                 }
               ]

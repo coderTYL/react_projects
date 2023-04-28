@@ -1,5 +1,5 @@
 import { Button, Card, Space } from 'antd';
-import React, { lazy, Suspense, useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import PersonalInfo from '../../components/description/PersonalInfo';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../../components/Loading';
@@ -12,7 +12,7 @@ export default function DashBoard() {
   let location = useLocation();
   let strForFetch = location.state;
   const navigate = useNavigate();
-  let employee = {};
+  const [employee, setEmployee] = useState({}) ;
 
   useEffect(
     ()=>{
@@ -21,10 +21,10 @@ export default function DashBoard() {
       }
       fetchEmployeeApi(employeeStr).then(
         (data)=>{
-          employee = data.data;
+          setEmployee(data.data);
         }
       )
-    }
+    }, []
   );
   /* const { Meta } = Card; */
   let showPersonalDetail = () => {
@@ -32,8 +32,8 @@ export default function DashBoard() {
   };
   return (
     <Suspense fallback={<Loading />}>
-      <Space direction='vertical' style={{ width: '100%', height: '100%', justifyContent: 'space-around' }}>
-        <Space direction='column' style={{ width: '100%', height: '100%', justifyContent: 'space-around' }}>
+      <Space direction='vertical' style={{ width: '100%', height: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
+        <Space direction='column' style={{ width: '100%', height: '100%', justifyContent: 'space-around', alignItems: 'center'  }}>
           {/* <Card
             hoverable
             cover={<img src=' ' alt='证据照' />}
@@ -44,9 +44,9 @@ export default function DashBoard() {
             <Meta title='姓名' description='胜任力分值' />
           </Card> */}
           <PersonalInfo employee={employee}/>
-          <GaugeChartContainer employee={employee} />
+          <GaugeChartContainer competency={employee.competency} />
         </Space>
-        <LineChartContainer />
+        <LineChartContainer scores={employee.scores}/>
       </Space>
     </Suspense>
   )

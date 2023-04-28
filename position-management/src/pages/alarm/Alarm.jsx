@@ -17,6 +17,7 @@ export default function Alarm() {
           let personList = data.data.map(
             (employee) => {
               return {
+                key: employee.id,
                 employeeID: employee.id,
                 name: employee.name,
                 position: employee.position,

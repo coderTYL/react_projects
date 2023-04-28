@@ -3,7 +3,7 @@ import { Table, Button, Popconfirm, Modal, Input, Space, Form, Upload, Select, m
 import { DeleteOutlined, ZoomInOutlined, PlusOutlined } from '@ant-design/icons';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { addEmployeeApi } from '../../../api/addEmployeeApi';
-import {deleteEmployeesApi} from '../../../api/deleteEmployeesApi';
+import {deleteEmployeeApi} from '../../../api/deleteEmployeeApi';
 import TextArea from 'antd/es/input/TextArea';
 import { fetchEmployeesApi } from '../../../api/fetchEmployeesApi';
 
@@ -42,7 +42,24 @@ const onReset = () => {
   formRef.current.resetFields();
 };
 
-let employeeIDForDelete = useRef([]);
+/* const employeeIDForDelete = useRef([]);
+let idArray = employeeIDForDelete.current;
+employeeIDForDelete.current.push(employeeID); */
+const handleDelete = (employeeID) => {
+  let idObject = {
+    employeeID
+  }
+  deleteEmployeeApi(idObject).then(
+    (data)=>{
+      if (data.data > 0) {
+        setCount(count +1);
+      }
+    },
+    (error)=>{
+      message.error(error);
+    }
+  )
+};
 // 组件加载时发送请求获取员工数据
 useEffect(
   () => {
@@ -67,25 +84,9 @@ useEffect(
         }
       }
     )
-
-    let idArray = employeeIDForDelete.current;
-    return () => {
-      // 组件卸载时向服务器发送请求删除选择的员工号数组
-      deleteEmployeesApi(idArray).then(
-        (data)=>{
-          if (data.data > 0) {
-            console.log(data.data);
-          }
-        }
-      )
-    }
   }, [count]
 );
-const handleDelete = (employeeID) => {
-  const newData = dataSource.filter((item) => item.employeeID !== employeeID);
-  employeeIDForDelete.current.push(employeeID);
-  setDataSource(newData);
-};
+
 
 const onSearch = (value) => {
   navigate('/home/manage/dashBoard', { state: value });

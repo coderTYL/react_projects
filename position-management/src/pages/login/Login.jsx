@@ -1,5 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { Button, Checkbox, Form, Input, Space, message } from 'antd';
 import '../../styles/login.css';
 import { useNavigate } from 'react-router-dom';
 import { loginApi } from '../../api/loginApi';
@@ -21,6 +21,8 @@ const Login = () => {
     );
   }
   return (
+    <Space direction='vertical'>
+    {/* <img src='' alt='图标' /> */}
     <Form
       name="normal_login"
       className="login-form"
@@ -68,6 +70,7 @@ const Login = () => {
         </Button>
       </Form.Item>
     </Form>
+    </Space>
   );
 };
 export default Login;

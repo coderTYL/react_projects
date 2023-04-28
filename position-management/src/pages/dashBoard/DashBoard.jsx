@@ -1,20 +1,34 @@
 import { Button, Card, Space } from 'antd';
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect, useRef } from 'react';
 import PersonalInfo from '../../components/description/PersonalInfo';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../../components/Loading';
+import { fetchEmployeeApi } from '../../api/fetchEmployeeApi';
 
 const GaugeChartContainer = lazy(() => { return import('../../components/charts/GaugeChartContainer') });
 const LineChartContainer = lazy(() => { return import('../../components/charts/LineChartContainer') });
 
 export default function DashBoard() {
   let location = useLocation();
-  let currentEmployeeID = location.state;
+  let strForFetch = location.state;
   const navigate = useNavigate();
+  let employee = {};
 
+  useEffect(
+    ()=>{
+      let employeeStr = {
+        strForFetch,
+      }
+      fetchEmployeeApi(employeeStr).then(
+        (data)=>{
+          employee = data.data;
+        }
+      )
+    }
+  );
   /* const { Meta } = Card; */
   let showPersonalDetail = () => {
-    navigate('/home/manage/personalDetail', { state: currentEmployeeID });
+    navigate('/home/manage/personalDetail', { state: employee });
   };
   return (
     <Suspense fallback={<Loading />}>
@@ -29,8 +43,8 @@ export default function DashBoard() {
           >
             <Meta title='姓名' description='胜任力分值' />
           </Card> */}
-          <PersonalInfo employeeID={currentEmployeeID}/>
-          <GaugeChartContainer employeeID={currentEmployeeID} />
+          <PersonalInfo employee={employee}/>
+          <GaugeChartContainer employee={employee} />
         </Space>
         <LineChartContainer />
       </Space>

@@ -6,6 +6,7 @@ import Highlighter from 'react-highlight-words';
 import React from 'react';
 import { addEventApi } from '../../api/addEventApi';
 import { fetchEventsApi } from '../../api/fetchEventsApi';
+import { useNavigate } from 'react-router-dom';
 
 const { TextArea } = Input;
 
@@ -14,6 +15,7 @@ export default function Event() {
     const [dataSource, setDataSource] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
+    const navigate = useNavigate();
     const searchInput = useRef(null);
 
     useEffect(
@@ -153,8 +155,8 @@ export default function Event() {
             ),
     });
 
-    let eventDetail = () => {
-        return '查看事件详情'
+    let eventDetail = (description) => {
+        return navigate('/home/eventDetail');
     }
     const columns = [
         {
@@ -224,8 +226,8 @@ export default function Event() {
             render: (_, record) => {
                 return dataSource.length >= 1 ? (
                     <Space>
-                        <Button type='primary' icon={<ZoomInOutlined />} size='small' onClick={() => { eventDetail(record.eventID) }}>详情</Button>
-
+                        <Button type='primary' icon={<ZoomInOutlined />} size='small' onClick={() => { eventDetail(record.description) }}>
+                        </Button>
                     </Space>) : null
             }
         }

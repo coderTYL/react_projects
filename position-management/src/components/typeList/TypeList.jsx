@@ -1,7 +1,9 @@
-import { Form, InputNumber,Input, Popconfirm, Table, Typography, Button, Modal, Select, Space } from 'antd';
+import { Form, InputNumber,Input, Popconfirm, Table, Typography, Button, Modal, Select, Space, message } from 'antd';
 import { useEffect, useState, useRef } from 'react';
 import { fetchTypesApi } from '../../api/fetchTypesApi';
+import { addTypeApi } from '../../api/addTypeApi';
 import TextArea from 'antd/es/input/TextArea';
+import { updateTypeApi } from '../../api/updateTypeApi';
 
 
 const EditableCell = ({
@@ -43,6 +45,7 @@ const TypeList = (props) => {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
+  const [count, setCount] = useState(0);
   const isEditing = (record) => record.key === editingKey;
 
   useEffect(
@@ -63,19 +66,29 @@ const TypeList = (props) => {
         setData(array);
       }
       );
-    }, [props]
+    }, [props, count]
   );
 
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
   const formRef = useRef();
   let showModal = () => {
     setOpen(true);
   };
-  let handleOk = (info) => {
-    setConfirmLoading(true);
+  let handleOk = () => {
    // 此处上传数据
    // 设置类型自动获取
+    let value = formRef.current.getFieldsValue();
+    addTypeApi(value).then(
+      (data)=>{
+        if (data.code === 1) {
+          message.success('添加成功！');
+          formRef.current.resetFields();
+          setCount(count +1);
+        }else if (data.code === 0) {
+          message.error('操作失败！请重试！');
+        }
+      }
+    )
     setOpen(false);
   };
   let handleCancel = () => {
@@ -116,6 +129,16 @@ const TypeList = (props) => {
         setData(newData);
         setEditingKey('');
       }
+      // 向服务器发送请求更新类型数据
+      updateTypeApi(row).then(
+        (data)=>{
+          if (data.data > 0) {
+            message.success('更新成功！');
+          }else {
+            message.error('操作失败！');
+          }
+        }
+      );
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
@@ -215,7 +238,6 @@ const TypeList = (props) => {
           title="请填写类型信息"
           open={open}
           onOk={handleOk}
-          confirmLoading={confirmLoading}
           onCancel={handleCancel}
         >
           <Form
@@ -256,7 +278,6 @@ const TypeList = (props) => {
     <Form form={form} component={false} >
       
       <Table
-        
         components={{
           body: {
             cell: EditableCell,
@@ -268,6 +289,7 @@ const TypeList = (props) => {
         rowClassName="editable-row"
         pagination={{
           onChange: cancel,
+          pageSize: 8
         }}
       />
     </Form>

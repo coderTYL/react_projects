@@ -13,6 +13,7 @@ import Register from "./pages/register/Register";
 import TypeList from "./components/typeList/TypeList";
 import Event from './pages/eventPage/Event';
 import AddEventPage from './pages/eventPage/AddEventPage';
+import EventDetail from './pages/eventPage/EventDetail';
 
 
 
@@ -88,6 +89,12 @@ export default function App() {
                 {
                     path: 'event',
                     element: <Event />,
+                    children: [
+                    ]
+                },
+                {
+                    path: 'eventDetail',
+                    element: <EventDetail />
                 },
                 {
                     path: 'addEvent',

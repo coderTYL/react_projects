@@ -5,12 +5,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../../components/Loading';
 import { fetchEmployeeApi } from '../../api/fetchEmployeeApi';
 
-const GaugeChartContainer = lazy(() => { return import('../../components/charts/GaugeChartContainer') });
-const LineChartContainer = lazy(() => { return import('../../components/charts/LineChartContainer') });
+const GaugeChartContainer = lazy(() => { return import('../../components/charts/GaugeChartContainer')});
+const LineChartContainer = lazy(() => { return import('../../components/charts/LineChartContainer')});
 
 export default function DashBoard() {
   let location = useLocation();
   let strForFetch = location.state;
+  console.log(strForFetch);
   const navigate = useNavigate();
   const [employee, setEmployee] = useState({}) ;
 
@@ -24,7 +25,7 @@ export default function DashBoard() {
           setEmployee(data.data);
         }
       )
-    }, []
+    },[]
   );
   /* const { Meta } = Card; */
   let showPersonalDetail = () => {
@@ -43,9 +44,9 @@ export default function DashBoard() {
           >
             <Meta title='姓名' description='胜任力分值' />
           </Card> */}
-          <PersonalInfo employee={employee}/>
-          <GaugeChartContainer competency={employee.competency} />
+          {/* <GaugeChartContainer competency={employee.competency} /> */}
         </Space>
+          <PersonalInfo employee={employee}/>
         <LineChartContainer scores={employee.scores}/>
       </Space>
     </Suspense>

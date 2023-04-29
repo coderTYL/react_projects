@@ -21,7 +21,7 @@ export default function Alarm() {
                 employeeID: employee.id,
                 name: employee.name,
                 position: employee.position,
-                department: employee.department,
+                department: employee.departmentName,
                 competency: employee.competency
               }
             }

@@ -153,9 +153,8 @@ const MainLayout = (props) => {
                     <h1 style={{fontWeight: 'bold'}}>客 舱 部 乘 务 岗 位 管 理 系 统</h1>
                 </Space>
                 <Space style={{ float: 'right' }} >
-                    欢迎! 管理员
                     <Button type="primary" onClick={signOut}>
-                        <LogoutOutlined />
+                        <LogoutOutlined /> 退出
                     </Button>
                 </Space>
             </Header>

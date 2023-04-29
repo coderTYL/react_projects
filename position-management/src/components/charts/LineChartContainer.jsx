@@ -1,16 +1,41 @@
 import * as echarts from 'echarts/core';
-import { GridComponent, DatasetComponent,TooltipComponent, LegendComponent } from 'echarts/components';
+import { GridComponent, DatasetComponent, TooltipComponent, LegendComponent } from 'echarts/components';
 import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function LineChartContainer(props) {
-    console.log(props);
+    const [dataSource, setDataSource] = useState([]);
+    function transformDataSource(scores) {
+        let array = Object.entries(scores);
+        let newArray = array.map(
+            (element) => {
+                return element = [
+                    element[0],
+                    ...element[1]
+                ]
+            }
+        );
+        let transformArray = newArray[0].map(
+                (col, i) => {
+                    return newArray.map(
+                        (row) => {
+                        return row[i];
+                    });
+                }
+        );
+        return transformArray;
+        
+    }
+    console.log(props.scores);
     useEffect(
         () => {
-            echarts.use([DatasetComponent,TooltipComponent, GridComponent,LegendComponent, LineChart, CanvasRenderer, UniversalTransition]);
+            /* let dataScr = transformDataSource(props.scores); 
+            setDataSource(dataScr);
+            console.log(dataScr);*/
+            echarts.use([DatasetComponent, TooltipComponent, GridComponent, LegendComponent, LineChart, CanvasRenderer, UniversalTransition]);
             let chartDom = document.querySelector('.lineContainer');
             let lineChart = echarts.init(chartDom);
             lineChart.setOption(
@@ -20,20 +45,20 @@ export default function LineChartContainer(props) {
                     tooltip: {},
                     dataset: {
                         source: [
-                            ["month","工作作风","标准落实","运行管理","特情处置","传帮带","重点工作推进"],
-                            ["January",100, 100, 100, 100,100,100],
-                            ["February",120,101, 110, 120,105,110],
-                            ["March",95,100, 108, 120,105,110],
-                            ["April",120,101, 110, 120,105,110],
-                            ["May",120,101, 110, 120,105,110],
-                            ["June",120,101, 110, 120,105,110],
-                            ["July",120,101, 110, 120,105,110],
-                            ["August",120,101, 110, 120,105,110],
-                            ["September",120,101, 110, 120,105,110],
-                            ["October",120,101, 110, 120,105,110],
-                            ["November",120,101, 110, 120,105,110],
-                            ["December",120,101, 110, 120,105,110],
-                            
+                            ["month", "工作作风", "标准落实", "运行管理", "特情处置", "传帮带", "重点工作推进"],
+                            ["January", 100, 100, 100, 100, 100, 100],
+                            ["February", 120, 101, 110, 120, 105, 110],
+                            ["March", 95, 100, 108, 120, 105, 110],
+                            ["April", 120, 101, 110, 120, 105, 110],
+                            ["May", 120, 101, 110, 120, 105, 110],
+                            ["June", 120, 101, 110, 120, 105, 110],
+                            ["July", 120, 101, 110, 120, 105, 110],
+                            ["August", 120, 101, 110, 120, 105, 110],
+                            ["September", 120, 101, 110, 120, 105, 110],
+                            ["October", 120, 101, 110, 120, 105, 110],
+                            ["November", 120, 101, 110, 120, 105, 110],
+                            ["December", 120, 101, 110, 120, 105, 110],
+
                         ]
                     },
                     xAxis: {
@@ -42,10 +67,10 @@ export default function LineChartContainer(props) {
                             show: true,
                             alignWithLabel: true,
                         },
-                        
+
                     },
                     yAxis: {
-                        
+
                     },
                     series: [
                         {
@@ -78,7 +103,7 @@ export default function LineChartContainer(props) {
             window.addEventListener('resize', function () {
                 lineChart.resize();
             })
-        }
+        }, [props]
     );
     return (
         <div

@@ -4,20 +4,25 @@ import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
 
 export default function LineChartContainer(props) {
-    const [dataSource, setDataSource] = useState([]);
+    
     function transformDataSource(scores) {
         let array = Object.entries(scores);
-        let newArray = array.map(
+        let arrayB = array.map(
             (element) => {
                 return element = [
                     element[0],
                     ...element[1]
                 ]
             }
-        );
+            );
+        let newArray = [
+            ["month","January","February","March","April","May","June","July","August","September","October","November","December",],
+            ...arrayB
+
+        ]
         let transformArray = newArray[0].map(
                 (col, i) => {
                     return newArray.map(
@@ -29,12 +34,10 @@ export default function LineChartContainer(props) {
         return transformArray;
         
     }
-    console.log(props.scores);
     useEffect(
         () => {
-            /* let dataScr = transformDataSource(props.scores); 
-            setDataSource(dataScr);
-            console.log(dataScr);*/
+            let dataScr = transformDataSource(props.scores); 
+            console.log(dataScr);
             echarts.use([DatasetComponent, TooltipComponent, GridComponent, LegendComponent, LineChart, CanvasRenderer, UniversalTransition]);
             let chartDom = document.querySelector('.lineContainer');
             let lineChart = echarts.init(chartDom);
@@ -44,7 +47,8 @@ export default function LineChartContainer(props) {
                     legend: {},
                     tooltip: {},
                     dataset: {
-                        source: [
+                        source: dataScr
+                        /* [
                             ["month", "工作作风", "标准落实", "运行管理", "特情处置", "传帮带", "重点工作推进"],
                             ["January", 100, 100, 100, 100, 100, 100],
                             ["February", 120, 101, 110, 120, 105, 110],
@@ -59,7 +63,7 @@ export default function LineChartContainer(props) {
                             ["November", 120, 101, 110, 120, 105, 110],
                             ["December", 120, 101, 110, 120, 105, 110],
 
-                        ]
+                        ] */
                     },
                     xAxis: {
                         type: 'category',

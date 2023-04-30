@@ -73,7 +73,7 @@ useEffect(
                 key: employee.id,
                 employeeID: employee.id,
                 name: employee.name,
-                gender: employee.gender,
+                gender: (employee.gender === 0 ? '女': '男'),
                 department: employee.departmentName,
                 position: employee.position,
                 competency: employee.competency,

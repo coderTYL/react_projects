@@ -41,6 +41,7 @@ export default function Event() {
                                     name: event.employeeName,
                                     position: event.employeePosition,
                                     department: event.departmentName,
+                                    description: event.description
                                 }
                             }
                         );
@@ -155,8 +156,8 @@ export default function Event() {
             ),
     });
 
-    let eventDetail = (description) => {
-        return navigate('/home/eventDetail');
+    let eventDetail = (event) => {
+        return navigate('/home/eventDetail', {state: event});
     }
     const columns = [
         {
@@ -226,7 +227,7 @@ export default function Event() {
             render: (_, record) => {
                 return dataSource.length >= 1 ? (
                     <Space>
-                        <Button type='primary' icon={<ZoomInOutlined />} size='small' onClick={() => { eventDetail(record.description) }}>
+                        <Button type='primary' icon={<ZoomInOutlined />} size='small' onClick={() => { eventDetail(record) }}>
                         </Button>
                     </Space>) : null
             }

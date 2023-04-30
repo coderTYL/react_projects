@@ -4,6 +4,7 @@ import '../../styles/login.css';
 import { useNavigate } from 'react-router-dom';
 import { loginApi } from '../../api/loginApi';
 import { setToken } from '../../utils/tokenUtil';
+import image from '../../assets/南航双图标.png';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Login = () => {
   }
   return (
     <Space direction='vertical'>
-    {/* <img src='' alt='图标' /> */}
+    <img src={image} alt='图标' style={{width: '30rem'}} />
     <Form
       name="normal_login"
       className="login-form"

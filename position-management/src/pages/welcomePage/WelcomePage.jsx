@@ -3,6 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Space } from 'antd';
 import '../../styles/welcomePage.css';
 import { useNavigate } from 'react-router-dom';
+import imageUrl1 from '../../assets/风采展示.jpg'
 
 export default function WelcomePage() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function WelcomePage() {
     <div id='homeContainer'>
       <Space id='images'>
         <div id='imageFrame'>
-          <img src=" " alt="风采展示" />
+          <img src={imageUrl1} alt="风采展示" />
         </div>
         <div id='imageFrame'>
           <img src=" " alt="风采展示" />

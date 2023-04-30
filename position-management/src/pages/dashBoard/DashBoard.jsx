@@ -5,27 +5,25 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../../components/Loading';
 import { fetchEmployeeApi } from '../../api/fetchEmployeeApi';
 
-const GaugeChartContainer = lazy(() => { return import('../../components/charts/GaugeChartContainer')});
-const LineChartContainer = lazy(() => { return import('../../components/charts/LineChartContainer')});
+const GaugeChartContainer = lazy(() => { return import('../../components/charts/GaugeChartContainer') });
+const LineChartContainer = lazy(() => { return import('../../components/charts/LineChartContainer') });
 
 export default function DashBoard() {
   let location = useLocation();
   let strForFetch = location.state;
-  console.log(strForFetch);
+  const [employee, setEmployee] = useState();
   const navigate = useNavigate();
-  const [employee, setEmployee] = useState({}) ;
-
   useEffect(
-    ()=>{
+    () => {
       let employeeStr = {
         strForFetch,
       }
       fetchEmployeeApi(employeeStr).then(
-        (data)=>{
+        (data) => {
           setEmployee(data.data);
         }
       )
-    },[]
+    }, []
   );
   /* const { Meta } = Card; */
   let showPersonalDetail = () => {
@@ -34,7 +32,7 @@ export default function DashBoard() {
   return (
     <Suspense fallback={<Loading />}>
       <Space direction='vertical' style={{ width: '100%', height: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
-        <Space direction='column' style={{ width: '100%', height: '100%', justifyContent: 'space-around', alignItems: 'center'  }}>
+        <Space direction='column' style={{ width: '100%', height: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
           {/* <Card
             hoverable
             cover={<img src=' ' alt='证据照' />}
@@ -46,8 +44,12 @@ export default function DashBoard() {
           </Card> */}
           {/* <GaugeChartContainer competency={employee.competency} /> */}
         </Space>
-          <PersonalInfo employee={employee}/>
-        <LineChartContainer scores={employee.scores}/>
+        {employee ?
+          <>
+            <PersonalInfo employee={employee} />
+            <LineChartContainer scores={employee.scores} />
+          </>
+          : null}
       </Space>
     </Suspense>
   )

@@ -1,7 +1,6 @@
 import React from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Space } from 'antd';
-import '../../styles/welcomePage.css';
 import { useNavigate } from 'react-router-dom';
 import imageUrl1 from '../../assets/风采展示.jpg'
 
@@ -11,18 +10,16 @@ export default function WelcomePage() {
     navigate('/home/addEvent');
   }
   return (
-    <div id='homeContainer'>
-      <Space id='images'>
-        <div id='imageFrame'>
-          <img src={imageUrl1} alt="风采展示" />
-        </div>
-        <div id='imageFrame'>
-          <img src=" " alt="风采展示" />
-        </div>
-        <div id='imageFrame'>
-          <img src=" " alt="风采展示" />
-        </div>
-      </Space>
+    <Space id='homeContainer' style={{justifyContent: 'space-around', minWidth: '100%', minHeight: '100%'}}>
+      <img src={imageUrl1} alt="风采展示" style={{width: '80%', objectFit: 'contain'}} />
+      <Space
+        direction='vertical'
+        style={{
+          minWidth: '100%',
+          minHeight: '100%',
+          justifyContent: 'space-between'
+        }}
+      >
       <article id='instruction'>
         <h1>使用说明：</h1>
         <p>1. 请先将需要管理的员工添加至系统中。</p>
@@ -31,6 +28,7 @@ export default function WelcomePage() {
       <Button type='primary' size='large' shape='round' onClick={addEvent}>
         <PlusOutlined /> 添加事件
       </Button>
-    </div>
+      </Space>
+    </Space>
   )
 }

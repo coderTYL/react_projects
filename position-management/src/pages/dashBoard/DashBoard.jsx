@@ -1,4 +1,4 @@
-import { Button, Card, Space } from 'antd';
+import { Button, Card, Space, Table } from 'antd';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import PersonalInfo from '../../components/description/PersonalInfo';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,6 +13,8 @@ export default function DashBoard() {
   let strForFetch = location.state;
   const [employee, setEmployee] = useState();
   const navigate = useNavigate();
+  console.log(employee);
+
   useEffect(
     () => {
       let employeeStr = {
@@ -29,25 +31,39 @@ export default function DashBoard() {
   let showPersonalDetail = () => {
     navigate('/home/manage/personalDetail', { state: employee });
   };
+
+  const columns = [
+    {
+      title: '事件编号',
+      dataIndex: 'id',
+      key: 'id',
+      align: 'center',
+      width: '15%',
+    },
+    {
+      title: '日期',
+      dataIndex: 'dateOfOccurrence',
+      key: 'dateOfOccurrence',
+      align: 'center',
+      width: '15%',
+    },
+    {
+      title: '概述',
+      dataIndex: 'description',
+      key: 'description',
+      align: 'center',
+    }
+  ]
   return (
     <Suspense fallback={<Loading />}>
-      <Space direction='vertical' style={{ width: '100%', height: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
-        <Space direction='column' style={{ width: '100%', height: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
-          {/* <Card
-            hoverable
-            cover={<img src=' ' alt='证据照' />}
-            actions={[
-              <Button type='text' onClick={showPersonalDetail}> 查看简历 </Button>
-            ]}
-          >
-            <Meta title='姓名' description='胜任力分值' />
-          </Card> */}
-          {/* <GaugeChartContainer competency={employee.competency} /> */}
-        </Space>
+      <Space direction='vertical' style={{width: '100%', height: '100%',overflow: 'auto', justifyContent: 'space-around', alignItems: 'center' }}>
         {employee ?
           <>
-            <PersonalInfo employee={employee} />
+            <PersonalInfo employee={employee}/>
             <LineChartContainer scores={employee.scores} />
+            <Card title='个人事件'>
+            <Table columns={columns} dataSource={employee.events} pagination={{pageSize: 2}}/>
+            </Card>
           </>
           : null}
       </Space>

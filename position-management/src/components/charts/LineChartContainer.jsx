@@ -7,7 +7,6 @@ import { CanvasRenderer } from 'echarts/renderers';
 import React, { useEffect} from 'react'
 
 export default function LineChartContainer(props) {
-    
     function transformDataSource(scores) {
         let array = Object.entries(scores);
         let arrayB = array.map(
@@ -37,7 +36,7 @@ export default function LineChartContainer(props) {
     useEffect(
         () => {
             let dataScr = transformDataSource(props.scores); 
-            console.log(dataScr);
+            
             echarts.use([DatasetComponent, TooltipComponent, GridComponent, LegendComponent, LineChart, CanvasRenderer, UniversalTransition]);
             let chartDom = document.querySelector('.lineContainer');
             let lineChart = echarts.init(chartDom);

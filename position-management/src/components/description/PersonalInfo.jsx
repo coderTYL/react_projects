@@ -12,11 +12,10 @@ const PersonalInfo = (props) => {
     }
     return (
         <Descriptions bordered>
-        <Descriptions.Item label="姓名" span={1.5} style={{alignContent: 'center'}}>{employee.name}</Descriptions.Item>
+        <Descriptions.Item label="姓名" span={1.5}>{employee.name}</Descriptions.Item>
         <Descriptions.Item label="员工号" span={1.5}>{employee.id}</Descriptions.Item>
         <Descriptions.Item label="部门" span={1.5}>{employee.departmentName}</Descriptions.Item>
         <Descriptions.Item label="岗位" span={1.5}>{employee.position}</Descriptions.Item>
-        <Descriptions.Item label="联系方式" span={3}>{employee.phone}</Descriptions.Item>
         <Descriptions.Item label="胜任力指数" span={3}>{employee.competency}</Descriptions.Item>
         <Descriptions.Item label="胜任力等级" span={3}>{level}</Descriptions.Item>
        {/*  <Descriptions.Item label="岗位工龄" span={3}>15年</Descriptions.Item>

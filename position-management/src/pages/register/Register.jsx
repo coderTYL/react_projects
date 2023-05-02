@@ -43,6 +43,7 @@ const Register = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const onFinish = (values) => {
+    console.log(values);
     registerApi(
       {
         employeeID: values.employeeID,
@@ -126,7 +127,6 @@ const Register = () => {
         name="confirm"
         label="确认密码"
         dependencies={['password']}
-        hasFeedback
         rules={[
           {
             required: true,
@@ -141,6 +141,7 @@ const Register = () => {
             },
           }),
         ]}
+       /*  hasFeedback */
       >
         <Input.Password />
       </Form.Item>

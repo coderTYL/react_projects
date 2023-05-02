@@ -13,8 +13,6 @@ export default function DashBoard() {
   let strForFetch = location.state;
   const [employee, setEmployee] = useState();
   const navigate = useNavigate();
-  console.log(employee);
-
   useEffect(
     () => {
       let employeeStr = {
@@ -31,14 +29,13 @@ export default function DashBoard() {
   let showPersonalDetail = () => {
     navigate('/home/manage/personalDetail', { state: employee });
   };
-
   const columns = [
     {
       title: '事件编号',
       dataIndex: 'id',
       key: 'id',
       align: 'center',
-      width: '15%',
+      width: '25%',
     },
     {
       title: '日期',
@@ -56,13 +53,23 @@ export default function DashBoard() {
   ]
   return (
     <Suspense fallback={<Loading />}>
-      <Space direction='vertical' style={{width: '100%', height: '100%',overflow: 'auto', justifyContent: 'space-around', alignItems: 'center' }}>
+      <Space direction='vertical' style={{ width: '100%', height: '100%'}}>
         {employee ?
           <>
-            <PersonalInfo employee={employee}/>
+            <PersonalInfo employee={employee} />
             <LineChartContainer scores={employee.scores} />
             <Card title='个人事件'>
-            <Table columns={columns} dataSource={employee.events} pagination={{pageSize: 2}}/>
+              <Table columns={columns}
+                dataSource={
+                  employee.events.map(
+                    (event) => {
+                      return {
+                        ...event,
+                        key: event.id,
+                      }
+                    }
+                )}
+                pagination={{ pageSize: 2 }} />
             </Card>
           </>
           : null}

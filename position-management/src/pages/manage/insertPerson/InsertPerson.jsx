@@ -1,4 +1,4 @@
-import { Form, Select, Input, DatePicker, Button, Space, Card } from 'antd'
+import { Form, Select, Input, DatePicker, Button, Space, Card, message } from 'antd'
 import { useRef } from 'react';
 import { addEmployeeApi } from '../../../api/addEmployeeApi'
 import React from 'react'
@@ -10,9 +10,14 @@ export default function InsertPerson() {
     formRef.current.resetFields();
   };
   const onFinish = (value) => {
-    console.log(value);
     addEmployeeApi(value).then(
-
+      (data)=>{
+        if (data.code === 1) {
+          message.success('添加成功！');
+        }else if (data.code === 0) {
+          message.error('操作失败！');
+        }
+      }
     );
   }
   return (

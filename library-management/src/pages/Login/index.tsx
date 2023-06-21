@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, Space } from 'antd';
 
 const onFinish = (values: any) => {
   console.log('Success:', values);
@@ -12,9 +12,9 @@ const onFinishFailed = (errorInfo: any) => {
 const Login: React.FC = () => (
   <Form
     name="basic"
-    labelCol={{ span: 8 }}
+    labelCol={{ span: 5 }}
     wrapperCol={{ span: 16 }}
-    style={{ maxWidth: 600 }}
+    style={{ maxWidth: 600, minWidth: '60vw' }}
     initialValues={{ remember: true }}
     onFinish={onFinish}
     onFinishFailed={onFinishFailed}
@@ -37,13 +37,12 @@ const Login: React.FC = () => (
     </Form.Item>
 
     <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
+      <Space>
       <Checkbox>记住我</Checkbox>
-    </Form.Item>
-
-    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
       <Button type="primary" htmlType="submit">
         提交
       </Button>
+      </Space>
     </Form.Item>
   </Form>
 );

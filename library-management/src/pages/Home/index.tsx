@@ -1,62 +1,75 @@
-import React from 'react';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import React, { ElementType, lazy } from 'react';
+import { HomeOutlined, UnorderedListOutlined, SettingOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const { Header, Content, Sider } = Layout;
 
-const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
-
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1);
-
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `subnav ${key}`,
-
-      children: new Array(4).fill(null).map((_, j) => {
-        const subKey = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
+const items: MenuProps['items'] = [
+  {
+    key: 'welcomePage',
+    icon: <HomeOutlined />,
+    label: '欢迎页'
   },
-);
+  {
+    key: 'bookList',
+    icon: <UnorderedListOutlined />,
+    label: '图书'
+  },
+  {
+    key: 'user',
+    icon: <UserOutlined />,
+    label: '用户',
+    children: [
+      {
+        key: 'notification',
+        icon: <NotificationOutlined />,
+        label: '消息'
+      },
+      {
+        key: 'config',
+        icon: <SettingOutlined />,
+        label: '个人设置'
+      }
+    ]
+  }
+]
+
+
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+  const onClick: MenuProps['onClick'] = (e) => {
+    let path = e.keyPath.reverse().join('/');
+    navigate(path);
+  };
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   return (
-    <Layout>
+    <Layout style={{minWidth:"100vw", minHeight:'100vh'}}>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
         <div className="demo-logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={items1} />
       </Header>
       <Layout>
         <Sider width={200} style={{ background: colorBgContainer }}>
           <Menu
             mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
+            defaultSelectedKeys={['welcomePage']}
+            defaultOpenKeys={['welcomePage']}
             style={{ height: '100%', borderRight: 0 }}
-            items={items2}
+            items={items}
+            onClick={onClick}
           />
         </Sider>
         <Layout style={{ padding: '0 24px 24px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
+          {/* <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>List</Breadcrumb.Item>
             <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
+          </Breadcrumb> */}
           <Content
             style={{
               padding: 24,
@@ -65,7 +78,7 @@ const Home: React.FC = () => {
               background: colorBgContainer,
             }}
           >
-            内容区
+            <Outlet />
           </Content>
         </Layout>
       </Layout>

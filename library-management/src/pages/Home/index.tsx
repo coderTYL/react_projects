@@ -2,7 +2,7 @@ import React, { ElementType, lazy } from 'react';
 import { HomeOutlined, UnorderedListOutlined, SettingOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const { Header, Content, Sider } = Layout;
 
@@ -39,6 +39,7 @@ const items: MenuProps['items'] = [
 
 
 const Home: React.FC = () => {
+  const {pathname} = useLocation();
   const navigate = useNavigate();
   const onClick: MenuProps['onClick'] = (e) => {
     let path = e.keyPath.reverse().join('/');
@@ -57,8 +58,8 @@ const Home: React.FC = () => {
         <Sider width={200} style={{ background: colorBgContainer }}>
           <Menu
             mode="inline"
-            defaultSelectedKeys={['welcomePage']}
-            defaultOpenKeys={['welcomePage']}
+            defaultSelectedKeys={[pathname]}
+            /* defaultOpenKeys={['welcomePage']} */
             style={{ height: '100%', borderRight: 0 }}
             items={items}
             onClick={onClick}

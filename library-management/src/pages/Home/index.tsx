@@ -1,7 +1,7 @@
 import React, { ElementType, lazy } from 'react';
-import { HomeOutlined, UnorderedListOutlined, SettingOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import { HomeOutlined, UnorderedListOutlined, LoginOutlined, SettingOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Breadcrumb, Button, Layout, Menu, theme } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const { Header, Content, Sider } = Layout;
@@ -51,8 +51,9 @@ const Home: React.FC = () => {
 
   return (
     <Layout style={{minWidth:"100vw", minHeight:'100vh'}}>
-      <Header style={{ display: 'flex', alignItems: 'center' }}>
+      <Header style={{ display: 'flex', alignItems:'center', justifyContent: 'space-between' }}>
         <div className="demo-logo" />
+        <Button type='default' icon={<LoginOutlined />}>退出</Button>
       </Header>
       <Layout>
         <Sider width={200} style={{ background: colorBgContainer }}>

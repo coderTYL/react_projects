@@ -1,7 +1,16 @@
-import { Card, Row, Col } from "antd";
+import { Card, Row, Col, Button, Popconfirm } from "antd";
 import Meta from "antd/es/card/Meta";
-import { ReactNode } from "react";
+import {PlusOutlined} from '@ant-design/icons';
 import { Book } from "../../../myTypes/myTypes";
+
+function confirmHandler():void {
+    console.log('确认删除');
+    
+}
+function cancelHandler(): void {
+    console.log('取消删除');
+    
+}
 
 function getBookCard(book: Book) {
     return (
@@ -11,7 +20,18 @@ function getBookCard(book: Book) {
             cover={
                 <img src={book.cover} alt="书本封面" />
             }
-            >
+            actions={[
+                <Popconfirm
+                    title='是否确认删除'
+                    onConfirm={confirmHandler}
+                    onCancel={cancelHandler}
+                    okText='是'
+                    cancelText='否'
+                >
+                   <Button type="default" danger size="small">删除</Button>
+                </Popconfirm>
+            ]}
+        >
             <Meta
                 title={book.name}
                 description={
@@ -41,7 +61,11 @@ const BookList: React.FC = () => {
         }
     ]
     return (
-        <Card title={'图书列表'} style={{ height: '100%', width: '100%' }}>
+        <Card 
+            title={'图书列表'} 
+            style={{ height: '100%', width: '100%' }}
+            extra={<Button type="primary" icon={<PlusOutlined />}>添加书籍</Button>}
+        >
             <Row gutter={[16, 16]}>
                     {bookList.map(getBookCard)}
             </Row>

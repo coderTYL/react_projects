@@ -14,7 +14,7 @@ function cancelHandler(): void {
 
 function getBookCard(book: Book) {
     return (
-        <Col span={8}>
+        <Col span={8} key={book.name}>
         <Card
             hoverable={true}
             cover={

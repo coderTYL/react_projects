@@ -29,7 +29,7 @@ const Login: React.FC = () => (
       name="basic"
       labelCol={{ span: 8 }} // 标签跨距
       wrapperCol={{ span: 16 }} // 表单内容跨距
-      initialValues={{ remember: true }}
+      initialValues={{ remember: true }} //
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"

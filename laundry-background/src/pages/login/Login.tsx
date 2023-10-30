@@ -1,8 +1,18 @@
 import React from 'react';
 import { Button, Checkbox, Flex, Form, Input } from 'antd';
+import User from '../../POJO/User';
+import { loginApi } from '../../api/login';
 
-const onFinish = (values: any) => {
-  console.log('Success:', values);
+const onFinish = (values: User) => {
+  loginApi(values).then(
+    (resolve)=>{
+      console.log('success',resolve);
+      
+    },
+    (reason)=>{
+      console.log('fail',reason);
+    }
+  );
 };
 
 const onFinishFailed = (errorInfo: any) => {

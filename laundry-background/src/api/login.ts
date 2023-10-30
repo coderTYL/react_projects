@@ -1,7 +1,6 @@
 import https from "../utils/https";
-import { AxiosPromise } from "axios";
+import User from "../POJO/User";
 
-
-export const loginApi = (userInfo: object)=>{
+export const loginApi = (userInfo: User): Promise<unknown>=>{
     return https('post', 'login', userInfo);
 }

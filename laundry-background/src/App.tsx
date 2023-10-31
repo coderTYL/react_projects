@@ -4,6 +4,7 @@ import { Layout, Menu, theme } from 'antd';
 import type { MenuProps, MenuTheme } from 'antd/es/menu';
 import { useNavigate } from 'react-router-dom';
 import Login from './pages/login/Login';
+import { hasToken } from './utils/tokenUtil';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -44,11 +45,14 @@ const menuItems: MenuItem[] = [
 
 
 const App: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(
+    (): boolean=>{
+      return hasToken();
+    }
+  );
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
   return (
     isLogin? 
     <Layout
@@ -79,7 +83,7 @@ const App: React.FC = () => {
         </Content>
         <Footer style={{ textAlign: 'center' }}>衣物洗护小程序后台</Footer>
       </Layout>
-    </Layout>: <Login />
+    </Layout>: <Login getChange={(bol: boolean)=>{setIsLogin(bol)}} />
   );
 };
 

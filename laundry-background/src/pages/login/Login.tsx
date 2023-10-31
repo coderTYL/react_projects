@@ -1,32 +1,40 @@
 import React from 'react';
 import { Button, Checkbox, Flex, Form, Input } from 'antd';
-import User from '../../POJO/User';
+import User from '../../types/User';
 import { loginApi } from '../../api/login';
+import { setToken } from '../../utils/tokenUtil';
+import { useNavigate } from 'react-router-dom';
 
-const onFinish = (values: User) => {
-  loginApi(values).then(
-    (resolve)=>{
-      console.log('success',resolve);
-      
-    },
-    (reason)=>{
-      console.log('fail',reason);
-    }
-  );
-};
+type childProps = {
+  getChange: Function,
+}
 
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
+const Login: React.FC<childProps> = (props) => {
+  let {getChange} = props;
+  const onFinish = (values: User) => {
+    loginApi(values).then(
+      (resolve: any) => {
+        console.log('success', resolve);
+        setToken(resolve.token);
+        getChange(true);
+      },
+      (reason) => {
+        console.log('fail', reason);
+      }
+    );
+  };
 
-type FieldType = {
-  username?: string;
-  password?: string;
-  remember?: string;
-};
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
 
-const Login: React.FC = () => (
-  <div
+  type FieldType = {
+    username?: string;
+    password?: string;
+    remember?: string;
+  };
+
+  return (<div
     style={{
       height: '100vh',
       width: '100vw',
@@ -75,6 +83,7 @@ const Login: React.FC = () => (
       </Form.Item>
     </Form>
   </div>
-);
+  )
+};
 
 export default Login;

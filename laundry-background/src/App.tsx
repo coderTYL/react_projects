@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { UploadOutlined, UserOutlined, CustomerServiceOutlined, MessageOutlined, ShopOutlined, CommentOutlined, VideoCameraOutlined, UnorderedListOutlined, OrderedListOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import { UserOutlined, LogoutOutlined, CustomerServiceOutlined, MessageOutlined, ShopOutlined, CommentOutlined, UnorderedListOutlined, OrderedListOutlined } from '@ant-design/icons';
+import { Button, Layout, Menu, theme } from 'antd';
 import type { MenuProps, MenuTheme } from 'antd/es/menu';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Login from './pages/login/Login';
-import { hasToken } from './utils/tokenUtil';
+import { clearToken, hasToken } from './utils/tokenUtil';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -31,7 +31,7 @@ const menuItems: MenuItem[] = [
     getItem('窗帘大物', 'curtain'),
     getItem('沙发床垫', 'sofa'),
   ]),
-  getItem('用户管理', 'user', <UserOutlined />),
+  getItem('用户管理', 'userManagement', <UserOutlined />),
   getItem('订单管理', 'order', <OrderedListOutlined />, [
     getItem('进行中', 'on_process'),
     getItem('已完成', 'complete'),
@@ -50,9 +50,18 @@ const App: React.FC = () => {
       return hasToken();
     }
   );
+  const navigate = useNavigate();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  let logout = (): void=>{ 
+    clearToken(); 
+    setIsLogin(false);
+  }
+  let onSelect = ({key}: {key: string}):void=>{
+    navigate(key);    
+  }
   return (
     isLogin? 
     <Layout
@@ -72,14 +81,19 @@ const App: React.FC = () => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['user']}
+          defaultSelectedKeys={['shop']}
           items={menuItems}
+          onSelect={onSelect}
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
+        <Header style={{ padding: 0, background: colorBgContainer, position: 'relative'}}>
+          <Button onClick={logout} type='primary' icon={<LogoutOutlined />} style={{position: "absolute", right: "5rem", top: "1rem"}}>退出</Button>
+        </Header>
         <Content style={{ margin: '24px 16px 0'}}>
-          <div style={{ padding: 24, minHeight: '100%', background: colorBgContainer }}>content</div>
+          <div style={{ padding: 24, minHeight: '100%', background: colorBgContainer }}>
+            <Outlet/>
+          </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>衣物洗护小程序后台</Footer>
       </Layout>

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import UserManagement from "./pages/userManagement/UserManagement";
+import ClientManagement from "./pages/clientManagement/ClientManagement";
 
 const router = createBrowserRouter(
     [
@@ -9,8 +9,8 @@ const router = createBrowserRouter(
             element: <App />,
             children: [
                 {
-                    path:"userManagement",
-                    element: <UserManagement/>
+                    path:"clientManagement",
+                    element: <ClientManagement/>
                 }
             ]
         }

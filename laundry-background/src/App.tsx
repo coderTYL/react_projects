@@ -31,7 +31,7 @@ const menuItems: MenuItem[] = [
     getItem('窗帘大物', 'curtain'),
     getItem('沙发床垫', 'sofa'),
   ]),
-  getItem('用户管理', 'userManagement', <UserOutlined />),
+  getItem('客户管理', 'clientManagement', <UserOutlined />),
   getItem('订单管理', 'order', <OrderedListOutlined />, [
     getItem('进行中', 'on_process'),
     getItem('已完成', 'complete'),
